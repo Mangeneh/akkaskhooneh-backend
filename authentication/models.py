@@ -12,9 +12,7 @@ class User(AbstractBaseUser):
     register_date = models.DateField(auto_now=True)
 
     USERNAME_FIELD = 'username'
-    Email_Field = 'email'
-
-    REQUIRED_FIELDS = []
+    EMAIL_FIELD = 'email'
 
     def __str__(self):
         return "Username: {}, Email: {}".format(self.username, self.email)
