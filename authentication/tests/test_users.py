@@ -1,25 +1,59 @@
 from django.test import TestCase
-from authentication.models.models import User
-from authentication.utils import create_user, login_after_signup
+from authentication.models import User
 
 
 class UserTestCase(TestCase):
     def setUp(self):
-        self.data = '''
-        {
-            "username": "kamyab",
-            "password": "1",
-            "email": "kamyab@kamyab.com"
+        self.user = User.objects.create(email='t@t.com', username='test', password='')
+        self.password = 'sjkkensks'
+        self.user.set_password(self.password)
+        self.user.save()
+
+        self.data = {
+            'email': self.user.email,
+            'password': self.password
         }
-        '''
 
-    def test_create_user(self):
-        user = create_user(self.data)
-        self.assertEqual(user, User.objects.first())
+    def check_status_login(self, data, status):
+        response = self.client.post("/auth/login/", data=data)
+        self.assertEqual(response.status_code, status)
 
-    def test_login_after_signup(self):
-        user = create_user(self.data)
-        token = login_after_signup(user)
-        data = {"token": token}
-        response = self.client.post("/auth/token/verify/", data=data)
-        self.assertEqual(response.status_code, 200)
+    def test_login(self):
+        password = self.password
+        data = self.data
+        self.check_status_login(data, 200)
+
+        data['password'] = 'a'
+        self.check_status_login(data, 400)
+
+        data['password'] = password
+        data['email'] = 'a@a.com'
+        self.check_status_login(data, 400)
+
+        data['password'] = data['email'] = None
+        self.check_status_login(data, 400)
+
+    def test_verify(self):
+        data = self.data
+
+        response = self.client.post("/auth/login/", data=data)
+        token = response.json()['token']
+
+        verify_response = self.client.post("/auth/token/verify/", data=response.json())
+        verify_token = verify_response.json()['token']
+
+        self.assertEqual(verify_response.status_code, 200)
+        self.assertEqual(token, verify_token)
+
+    def test_signup(self):
+        response = self.client.post("/auth/register/", data=self.data)
+        self.assertEqual(response.status_code, 400)
+
+        data = {
+            'username': 'testewlw',
+            'email': 'test@t.com',
+            'password': '1234'
+        }
+
+        response = self.client.post("/auth/register/", data=data)
+        self.assertEqual(response.status_code, 201)
