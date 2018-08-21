@@ -1,5 +1,5 @@
 from django.test import TestCase
-from authentication.models import User
+from authentication.models.models import User
 from authentication.utils import create_user, login_after_signup
 
 
