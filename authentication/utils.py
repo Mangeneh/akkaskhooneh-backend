@@ -1,15 +1,15 @@
-import json
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.utils.six import text_type
 
-from rest_framework_jwt.settings import api_settings
+def get_simplejwt_tokens(user):
+    """This foucntion get a User object and return 'access' and 'refresh' tokens."""
 
-from authentication.models import User
+    tokens = RefreshToken.for_user(user)
+    refresh = text_type(tokens)
+    access = text_type(tokens.access_token)
+    data = {
+        "refresh": refresh,
+        "access": access
+    }
 
-
-def get_token(user):
-    jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-    jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-    payload = jwt_payload_handler(user)
-    token = jwt_encode_handler(payload)
-
-    return token
+    return data
