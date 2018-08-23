@@ -6,7 +6,7 @@ decorator==4.3.0
 Django==2.1
 django-filter==2.0.0
 djangorestframework==3.8.2
-djangorestframework-jwt==1.11.0
+djangorestframework-simplejwt==3.2.3
 entrypoints==0.2.3
 gunicorn==19.9.0
 html5lib==1.0.1

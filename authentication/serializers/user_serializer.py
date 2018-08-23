@@ -1,18 +1,21 @@
 from markdown.odict import OrderedDict
 from rest_framework import serializers
 from rest_framework.response import Response
-from authentication.utils import get_token
+from authentication.utils import get_simplejwt_tokens
 
 from authentication.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    token = serializers.CharField(max_length=50, read_only=True)
+    refresh = serializers.CharField(max_length=254, read_only=True)
+    access = serializers.CharField(max_length=254, read_only=True)
 
     class Meta:
         model = User
         fields = ('id', 'email', 'username', 'password',
-                  'fullname', 'bio', 'phone_number', 'token')
+                  'fullname', 'bio', 'phone_number',
+                  'refresh', 'access'
+                  )
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -32,9 +35,12 @@ class UserSerializer(serializers.ModelSerializer):
 
         user.save()
 
+        tokens = get_simplejwt_tokens(user)
+
         data = {
             'email': user.email,
             'username': user.username,
-            'token': get_token(user)
+            'refresh': tokens['refresh'],
+            'access': tokens['access']
         }
         return data
