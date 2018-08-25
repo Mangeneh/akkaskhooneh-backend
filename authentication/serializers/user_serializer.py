@@ -16,7 +16,13 @@ class UserSerializer(serializers.ModelSerializer):
                   'fullname', 'bio', 'phone_number',
                   'refresh', 'access'
                   )
-        extra_kwargs = {'password': {'write_only': True}}
+        extra_kwargs = {'password': {'write_only': True},
+                        'email': {'write_only': True},
+                        'username': {'write_only': True},
+                        'phone_number': {'write_only': True},
+                        'fullname': {'write_only': True},
+                        'bio': {'write_only': True},
+                        }
 
     def create(self, validated_data):
         username = validated_data.get("username")
@@ -38,8 +44,6 @@ class UserSerializer(serializers.ModelSerializer):
         tokens = get_simplejwt_tokens(user)
 
         data = {
-            'email': user.email,
-            'username': user.username,
             'refresh': tokens['refresh'],
             'access': tokens['access']
         }
