@@ -14,7 +14,7 @@ class StandardPagination(pagination.PageNumberPagination):
 
 class PaginationApiView(generics.ListAPIView):
     """ This api view use for make pagination for pictures in user account"""
-
+    queryset = Posts.objects.all()
     serializer_class = PaginationSerializer
     pagination_class = StandardPagination
 
