@@ -27,7 +27,6 @@ class UserSerializer(serializers.ModelSerializer):
         username = validated_data.get("username")
         password = validated_data.get("password")
         email = validated_data.get("email")
-        profile_picture = validated_data.get("profile_pic")
 
         user = User.objects.create(username=username, password="", email=email)
 
@@ -35,7 +34,6 @@ class UserSerializer(serializers.ModelSerializer):
         user.fullname = validated_data.get("fullname")
         user.bio = validated_data.get("bio")
         user.phone_number = validated_data.get("phone_number")
-        user.profile_picture = profile_picture
 
         user.save()
 
