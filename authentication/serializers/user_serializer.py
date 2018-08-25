@@ -3,7 +3,8 @@ from rest_framework.response import Response
 from authentication.utils import get_simplejwt_tokens
 
 from authentication.models import User
-
+from rest_framework.serializers import Serializer
+from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
     refresh = serializers.CharField(max_length=254, read_only=True)
@@ -47,3 +48,14 @@ class UserSerializer(serializers.ModelSerializer):
             'access': tokens['access']
         }
         return data
+
+class UserChangePasswordSerializer(serializers.Serializer):
+
+    old_password = serializers.CharField(required=True)
+    password = serializers.CharField(required=True)
+    repeat_password = serializers.CharField(required=True)
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
+
