@@ -11,9 +11,8 @@ from social.serializers.set_profile_serializer import SetProfilePicSerializer
 class SetProfilePicViewSet(APIView):
 
     def post(self, request, format=None):
-        print(request.FILES['profile_picture'])
         user = request.user
-        user.profile_picture = request.FILES['file']
+        user.profile_picture = request.FILES['profile_picture']
         user.save()
         serializer = SetProfilePicSerializer(user)
         return Response(serializer.data)
