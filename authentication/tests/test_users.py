@@ -21,7 +21,7 @@ class UserTestCase(TestCase):
     def test_login(self):
         password = self.password
         data = self.data
-        self.check_status_login(data, 200)
+        self.check_status_login(data, 201)
 
         data['password'] = 'a'
         self.check_status_login(data, 400)
@@ -37,13 +37,15 @@ class UserTestCase(TestCase):
         data = self.data
 
         response = self.client.post("/auth/login/", data=data)
-        token = response.json()['token']
+        token = response.json()['access']
 
-        verify_response = self.client.post("/auth/token/verify/", data=response.json())
-        verify_token = verify_response.json()['token']
+        data = {
+            'token':token
+        }
+
+        verify_response = self.client.post("/auth/token/verify/", data=data)
 
         self.assertEqual(verify_response.status_code, 200)
-        self.assertEqual(token, verify_token)
 
     def test_signup(self):
         response = self.client.post("/auth/register/", data=self.data)
