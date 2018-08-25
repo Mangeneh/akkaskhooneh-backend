@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'email', 'username', 'password',
                   'fullname', 'bio', 'phone_number',
-                  'refresh', 'access'
+                  'refresh', 'access', 'profile_picture',
                   )
         extra_kwargs = {'password': {'write_only': True},
                         'email': {'write_only': True},
@@ -27,8 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
         username = validated_data.get("username")
         password = validated_data.get("password")
         email = validated_data.get("email")
-        profile_picture = None
-        # TODO profile picture
+        profile_picture = validated_data.get("profile_pic")
 
         user = User.objects.create(username=username, password="", email=email)
 
