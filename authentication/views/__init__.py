@@ -1,1 +1,1 @@
-from .views import *
+from .register_view_set import RegisterViewSet

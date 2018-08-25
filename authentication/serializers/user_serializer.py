@@ -1,4 +1,3 @@
-from markdown.odict import OrderedDict
 from rest_framework import serializers
 from rest_framework.response import Response
 from authentication.utils import get_simplejwt_tokens
