@@ -70,9 +70,7 @@ class EditProfile(APIView):
 
 
 class CheckEmailApiView(APIView):
-    """ This api view use for check email address in database
-    and check passsword validation.
-    """
+    """ This api view use for check email address exist in database."""
 
     permission_classes = (permissions.AllowAny,)
 
