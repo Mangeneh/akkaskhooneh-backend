@@ -1,11 +1,11 @@
-from rest_framework import serializers
-from rest_framework.response import Response
-from authentication.utils import get_simplejwt_tokens
-
-from authentication.models import User
-from rest_framework.serializers import Serializer
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+
+from rest_framework import serializers
+
+from authentication.utils import get_simplejwt_tokens
+from authentication.models import User
+
 
 class UserSerializer(serializers.ModelSerializer):
     refresh = serializers.CharField(max_length=254, read_only=True)
@@ -30,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         email = validated_data.get("email")
 
         user = User.objects.create(username=username, password="", email=email)
-        
+
         user.set_password(password)
         user.fullname = validated_data.get("fullname")
         user.bio = validated_data.get("bio")
@@ -46,7 +46,6 @@ class UserSerializer(serializers.ModelSerializer):
         }
         return data
 
-
     def validate(self, data):
         # here data has all the fields which have validated values
         # so we can create a User instance out of it
@@ -54,7 +53,7 @@ class UserSerializer(serializers.ModelSerializer):
         # get the password from the data
         password = data.get('password')
 
-        errors = dict() 
+        errors = dict()
         try:
             # validate the password and catch the exception
             validate_password(password=password, user=user)
@@ -67,22 +66,11 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(errors)
 
         return super(UserSerializer, self).validate(data)
-        
-
-class UserChangePasswordSerializer(serializers.Serializer):
-
-    old_password = serializers.CharField(required=True)
-    password = serializers.CharField(required=True)
-    repeat_password = serializers.CharField(required=True)
-
-    def validate_password(self, value):
-        validate_password(value)
-        return value
-
-class UserEditProfileSerializer(serializers.Serializer):
-    bio = serializers.CharField(max_length=255, default=None)
-    fullname = serializers.CharField(max_length=50, default=None)
 
 
-class EmailSerializer(serializers.Serializer):
-    email = serializers.EmailField()
+
+
+
+
+
+

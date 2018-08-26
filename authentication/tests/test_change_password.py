@@ -16,8 +16,7 @@ class UserTestCase(TestCase):
         new_password = 'testTEST1234'
         post_data = {
             'old_password': self.password,
-            'password': new_password,
-            'repeat_password': new_password,
+            'new_password': new_password,
         }
         login_data = {
             'email': 't@t.com',
@@ -38,8 +37,7 @@ class UserTestCase(TestCase):
         new_password = 'testTEST1234'
         post_data = {
             'old_password': "wghjk",
-            'password': new_password,
-            'repeat_password': new_password,
+            'new_password': new_password,
         }
         login_data = {
             'email': 't@t.com',
@@ -57,8 +55,7 @@ class UserTestCase(TestCase):
         new_password = '44'
         post_data = {
             'old_password': "wghjk",
-            'password': new_password,
-            'repeat_password': new_password,
+            'new_password': new_password,
         }
         login_data = {
             'email': 't@t.com',
