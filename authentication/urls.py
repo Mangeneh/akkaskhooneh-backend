@@ -1,5 +1,4 @@
 from django.urls import path, include
-from django.conf.urls import url
 from authentication import views
 from rest_framework_simplejwt.views import (
     token_obtain_pair,

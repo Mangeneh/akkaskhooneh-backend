@@ -1,6 +1,6 @@
 from django.test import TestCase
 from authentication.models import User
-import random, string
+from string import ascii_letters
 from random import choice
 
 from rest_framework.test import APIClient
@@ -45,17 +45,17 @@ class UserTestCase(TestCase):
     def test_big_email_login(self):
         data = self.data
         for i in range(100):
-            data['email'] = random.choice(string.ascii_letters) + data['email']
+            data['email'] = choice(ascii_letters) + data['email']
         self.check_status_login(data, 400)
 
     def test_big_password_login(self):
         data = self.data
         for i in range(100):
-            data['password'] = random.choice(string.ascii_letters) + data['password']
+            data['password'] = choice(ascii_letters) + data['password']
         self.check_status_login(data, 400)
 
     def test_verify(self):
-        verify_response = self.client.post("/auth/token/verify/", data={'token':self.token})
+        verify_response = self.client.post("/auth/token/verify/", data={'token': self.token})
         self.assertEqual(verify_response.status_code, 200)
 
     def test_unique_email_register(self):
@@ -72,7 +72,7 @@ class UserTestCase(TestCase):
         data = {
             'username': 'testewjlw',
             'email': 'test',
-            'password': '1234'
+            'password': '1234@@@@'
         }
 
         response = self.client.post("/auth/register/", data=data)
@@ -82,50 +82,8 @@ class UserTestCase(TestCase):
         data = {
             'username': 'testewlw',
             'email': 'test@t.com',
-            'password': '1234'
+            'password': '1234@@@@'
         }
 
         response = self.client.post("/auth/register/", data=data)
         self.assertEqual(response.status_code, 201)
-
-    def test_true_editprofile(self):
-        data = {
-            'bio': 'salam',
-            'fullname': 'ali'
-        }
-        auth = 'Bearer '+self.token
-        client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION=auth)
-        response = client.post("/auth/editprofile/", data=data)
-        self.assertEqual(response.status_code, 200)
-
-    def test_edit_bio(self):
-        data = {
-            'bio': 'salamm'
-        }
-        auth = 'Bearer '+self.token
-        client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION=auth)
-        response = client.post("/auth/editprofile/", data=data)
-        self.assertEqual(response.status_code, 200)
-
-
-    def test_edit_name(self):
-        data = {
-            'fullname': 'ali'
-        }
-        auth = 'Bearer '+self.token
-        client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION=auth)
-        response = client.post("/auth/editprofile/", data=data)
-        self.assertEqual(response.status_code, 200)
-
-    def test_edit_big_bio(self):
-        data = {
-            'bio': ''.join(choice(string.ascii_uppercase) for i in range(301))
-        }
-        auth = 'Bearer '+self.token
-        client = APIClient()
-        client.credentials(HTTP_AUTHORIZATION=auth)
-        response = client.post("/auth/editprofile/", data=data)
-        self.assertEqual(response.status_code, 400)

@@ -1,6 +1,7 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.utils.six import text_type
 
+
 def get_simplejwt_tokens(user):
     """This foucntion get a User object and return 'access' and 'refresh' tokens."""
 
