@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 class RegisterViewSet(generics.ListCreateAPIView):
     http_method_names = ['post']
     queryset = User.objects.all()
+    serializer_class = UserSerializer
     permission_classes = (permissions.AllowAny,)
 
 
