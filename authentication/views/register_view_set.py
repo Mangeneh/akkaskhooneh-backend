@@ -22,7 +22,7 @@ class ChangePassword(APIView):
         return self.request.user
 
     def put(self, request, *args, **kwargs):
-        self.object = self.get_object()
+        object = self.get_object()
         serializer = UserChangePasswordSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -30,7 +30,7 @@ class ChangePassword(APIView):
             password = serializer.data.get("password")
             repeat_password = serializer.data.get("repeat_password")
 
-            if not self.object.check_password(old_password):
+            if not object.check_password(old_password):
                 return Response({"old_password": ["Wrong password."]},
                                 status=status.HTTP_400_BAD_REQUEST)
 
@@ -38,8 +38,8 @@ class ChangePassword(APIView):
                 return Response({"password": ["Password does not match."]},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-            self.object.set_password(serializer.data.get("password"))
-            self.object.save()
+            object.set_password(serializer.data.get("password"))
+            object.save()
             return Response(status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -54,16 +54,16 @@ class EditProfile(APIView):
         return self.request.user
 
     def post(self, request):
-        self.object = self.get_object()
+        object = self.get_object()
         serializer = UserEditProfileSerializer(data=request.data)
         if serializer.is_valid():
             bio = serializer.data.get("bio")
             fullname = serializer.data.get("fullname")
             if bio != None:
-                self.object.bio = bio
+                object.bio = bio
             if fullname != None:
-                self.object.fullname = fullname
-            self.object.save()
+                object.fullname = fullname
+            object.save()
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
