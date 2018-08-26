@@ -5,6 +5,7 @@ from authentication.utils import get_simplejwt_tokens
 from authentication.models import User
 from rest_framework.serializers import Serializer
 from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
 
 class UserSerializer(serializers.ModelSerializer):
     refresh = serializers.CharField(max_length=254, read_only=True)
@@ -29,7 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
         email = validated_data.get("email")
 
         user = User.objects.create(username=username, password="", email=email)
-
+        
         user.set_password(password)
         user.fullname = validated_data.get("fullname")
         user.bio = validated_data.get("bio")
@@ -44,6 +45,29 @@ class UserSerializer(serializers.ModelSerializer):
             'access': tokens['access']
         }
         return data
+
+
+    def validate(self, data):
+        # here data has all the fields which have validated values
+        # so we can create a User instance out of it
+        user = User(**data)
+        # get the password from the data
+        password = data.get('password')
+
+        errors = dict() 
+        try:
+            # validate the password and catch the exception
+            validate_password(password=password, user=user)
+
+        # the exception raised here is different than serializers.ValidationError
+        except ValidationError as e:
+            errors['password'] = list(e.messages)
+
+        if errors:
+            raise serializers.ValidationError(errors)
+
+        return super(UserSerializer, self).validate(data)
+        
 
 class UserChangePasswordSerializer(serializers.Serializer):
 
