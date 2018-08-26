@@ -1,14 +1,14 @@
-from rest_framework import generics, permissions, status
+from rest_framework import generics, permissions, status, authentication
 from rest_framework.response import Response
 from authentication.models import User
-from authentication.serializers.user_serializer import UserSerializer, UserChangePasswordSerializer
+from authentication.serializers.user_serializer import UserSerializer, UserChangePasswordSerializer, UserEditProfileSerializer
 from rest_framework.views import APIView
 
 class RegisterViewSet(generics.ListCreateAPIView):
     http_method_names = ['post']
-    serializer_class = UserSerializer
     queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
+
 
 class ChangePassword(APIView):
 
@@ -40,3 +40,27 @@ class ChangePassword(APIView):
             return Response(status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EditProfile(APIView):
+
+    http_method_names = ['post']
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_object(self):
+        return self.request.user
+
+    def post(self, request):
+        self.object = self.get_object()
+        serializer = UserEditProfileSerializer(data=request.data)
+        if serializer.is_valid():
+            bio = serializer.data.get("bio")
+            fullname = serializer.data.get("fullname")
+            if bio != None:
+                self.object.bio = bio
+            if fullname != None:
+                self.object.fullname = fullname
+            self.object.save()
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)

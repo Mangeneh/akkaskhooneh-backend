@@ -19,8 +19,8 @@ class UserSerializer(serializers.ModelSerializer):
                         'email': {'write_only': True},
                         'username': {'write_only': True},
                         'phone_number': {'write_only': True},
-                        'fullname': {'write_only': True},
-                        'bio': {'write_only': True},
+                        'fullname': {'write_only': False},
+                        'bio': {'write_only': False},
                         }
 
     def create(self, validated_data):
@@ -54,4 +54,9 @@ class UserChangePasswordSerializer(serializers.Serializer):
     def validate_password(self, value):
         validate_password(value)
         return value
+
+class UserEditProfileSerializer(serializers.Serializer):
+    bio = serializers.CharField(max_length=300, default=None)
+    fullname = serializers.CharField(max_length=50, default=None)
+
 
