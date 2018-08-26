@@ -60,3 +60,5 @@ class UserEditProfileSerializer(serializers.Serializer):
     fullname = serializers.CharField(max_length=50, default=None)
 
 
+class EmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()

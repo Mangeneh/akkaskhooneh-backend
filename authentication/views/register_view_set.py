@@ -1,8 +1,10 @@
 from rest_framework import generics, permissions, status, authentication
 from rest_framework.response import Response
 from authentication.models import User
-from authentication.serializers.user_serializer import UserSerializer, UserChangePasswordSerializer, UserEditProfileSerializer
+from authentication.serializers.user_serializer import UserSerializer, UserChangePasswordSerializer, UserEditProfileSerializer, EmailSerializer
 from rest_framework.views import APIView
+from django.core.exceptions import ObjectDoesNotExist
+
 
 class RegisterViewSet(generics.ListCreateAPIView):
     http_method_names = ['post']
@@ -65,3 +67,29 @@ class EditProfile(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+
+
+class CheckEmailApiView(APIView):
+    """ This api view use for check email address in database
+    and check passsword validation.
+    """
+
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request):
+        serializer = EmailSerializer(data=request.data)
+        if serializer.is_valid():
+            email = request.POST.get('email')
+            try:
+                User.objects.get(email=email)
+            except ObjectDoesNotExist:
+                return Response({
+                    "message": "Email is does not exist."
+                }, status=status.HTTP_200_OK)
+            return Response({
+                "message": "Email is exist"
+            }, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response({
+                "message": "Email address is not valid"
+            }, status=status.HTTP_400_BAD_REQUEST)
