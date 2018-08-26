@@ -55,3 +55,8 @@ class UserChangePasswordSerializer(serializers.Serializer):
         validate_password(value)
         return value
 
+class UserEditProfileSerializer(serializers.Serializer):
+    bio = serializers.CharField(max_length=255, default=None)
+    fullname = serializers.CharField(max_length=50, default=None)
+
+

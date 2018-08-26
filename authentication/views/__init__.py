@@ -1,1 +1,1 @@
-from .register_view_set import RegisterViewSet, ChangePassword
+from .register_view_set import RegisterViewSet, ChangePassword, EditProfile
