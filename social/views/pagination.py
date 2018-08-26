@@ -1,9 +1,10 @@
-from rest_framework import generics, pagination
+from rest_framework import generics, pagination, status
 from rest_framework.response import Response
 
 from social.models.posts import Posts
 from authentication.models.user import User
 from social.serializers.pagination import PaginationSerializer
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class StandardPagination(pagination.PageNumberPagination):
@@ -23,7 +24,11 @@ class PaginationApiView(generics.ListAPIView):
 
         update = {'owner': request.user}
         if username:
-            update.update({'owner': User.objects.get(username=username)})
+            try:
+                us = User.objects.get(username=username)
+            except ObjectDoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            update.update({'owner': us})
 
         queryset = queryset.filter(**update)
         page = self.paginate_queryset(queryset)
