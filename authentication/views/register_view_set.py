@@ -6,8 +6,8 @@ from rest_framework.views import APIView
 
 class RegisterViewSet(generics.ListCreateAPIView):
     http_method_names = ['post']
-    queryset = User.objects.all()
     serializer_class = UserSerializer
+    queryset = User.objects.all()
     permission_classes = (permissions.AllowAny,)
 
 class ChangePassword(APIView):
