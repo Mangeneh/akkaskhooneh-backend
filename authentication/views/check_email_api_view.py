@@ -20,10 +20,10 @@ class CheckEmailApiView(APIView):
                 User.objects.get(email=email)
             except ObjectDoesNotExist:
                 return Response({
-                    "message": "Email is does not exist."
+                    "message": "Email does not exist."
                 }, status=status.HTTP_200_OK)
             return Response({
-                "message": "Email is exist"
+                "message": "Email exists"
             }, status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response({
