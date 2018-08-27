@@ -13,17 +13,7 @@ class EditProfileTestCase(TestCase):
         self.user.set_password(self.password)
         self.user.save()
 
-        data = {
-            'email': self.user.email,
-            'password': self.password
-        }
-        response = self.client.post("/auth/login/", data=data)
-        token = response.json()['access']
-
-        auth = 'Bearer ' + token
-
-        self.client = APIClient()
-        self.client.credentials(HTTP_AUTHORIZATION=auth)
+        self.client.login(email=self.user.email, password=self.password)
 
     def test_true_edit_profile(self):
         data = {
