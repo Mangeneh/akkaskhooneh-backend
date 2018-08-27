@@ -11,11 +11,18 @@ class ProfileViewSet(APIView):
     Retrieve a profile instance.
     """
 
+    def _response(self, data, request):
+        if data['profile_picture']:
+            data['profile_picture'] = str(request.scheme) + '://' + request.get_host() + data['profile_picture']
+        return Response(data)
+
     def get(self, request, username=None, format=None):
         if username is None:
             user = request.user
             serializer = ProfileSerializer(user)
-            return Response(serializer.data)
+            data = serializer.data
+
+            return self._response(data, request)
         else:
             user = User.objects.filter(username=username).first()
 
@@ -24,4 +31,8 @@ class ProfileViewSet(APIView):
                 return Response(response_content, status.HTTP_404_NOT_FOUND)
 
             serializer = ProfileSerializer(user)
-            return Response(serializer.data)
+
+            data = serializer.data
+            data.pop('email', None)
+
+            return self._response(data, request)
