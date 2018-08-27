@@ -35,7 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.bio = validated_data.get("bio")
         user.phone_number = validated_data.get("phone_number")
 
-        # user.save()
+        user.save()
 
         tokens = get_simplejwt_tokens(user)
 
