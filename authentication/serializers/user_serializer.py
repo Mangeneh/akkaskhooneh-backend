@@ -29,9 +29,8 @@ class UserSerializer(serializers.ModelSerializer):
         password = validated_data.get("password")
         email = validated_data.get("email")
 
-        user = User.objects.create(username=username, password="", email=email)
+        user = User.objects.create_user(username=username, password=password, email=email)
 
-        user.set_password(password)
         user.fullname = validated_data.get("fullname")
         user.bio = validated_data.get("bio")
         user.phone_number = validated_data.get("phone_number")
@@ -53,9 +52,8 @@ class UserSerializer(serializers.ModelSerializer):
         # get the password from the data
         password = data.get('password')
         username = data.get("username")
-        email = data.get("email")
 
-        errors = dict()
+        errors = {}
         try:
             # validate the password and catch the exception
             validate_password(password=password, user=user)
@@ -65,9 +63,9 @@ class UserSerializer(serializers.ModelSerializer):
             errors['password'] = list(e.messages)
 
         try:
-            User.objects.create_user(email=email, username=username, password=password)
+            User.objects.check_username(username=username)
         except ValidationError as e:
-            errors['username'] = list(e.messages)
+            errors['username'] = e.message
 
         if errors:
             raise serializers.ValidationError(errors)

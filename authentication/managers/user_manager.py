@@ -1,11 +1,21 @@
 import re
-
+from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.base_user import BaseUserManager
 from django.core.exceptions import ValidationError
 
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
+
+    def check_username(self, username):
+        """
+        Checks can create a User with given info
+        """
+        if not username:
+            raise ValidationError('The given username must be set')
+
+        if not re.match("^[a-zA-Z0-9_]{4,20}$", username):
+            raise ValidationError('Your username is not valid')
 
     def _create_user(self, email, username, password, **extra_fields):
         """
@@ -17,7 +27,7 @@ class UserManager(BaseUserManager):
         if not username:
             raise ValueError('The given username must be set')
 
-        if not re.match("^[a-zA-Z0-9_]{4,20}", username):
+        if not re.match("^[a-zA-Z0-9_]{4,20}$", username):
             raise ValidationError('Your username is not valid')
 
         email = self.normalize_email(email)
