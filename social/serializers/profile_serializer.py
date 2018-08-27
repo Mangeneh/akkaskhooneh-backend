@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from authentication.models import User
 from social.models.followers import Followers
-import socket
 
 
 class ProfileSerializer(serializers.ModelSerializer):
