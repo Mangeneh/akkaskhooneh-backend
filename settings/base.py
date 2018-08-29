@@ -180,6 +180,11 @@ LOGGING = {
             'level': 'INFO',
             'propagate': True,
         },
+        'social': {
+            'handlers': ['file', 'console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
 
     },
 }

@@ -15,7 +15,6 @@ class Posts(models.Model):
         
         im = Image.open(fieldfile_obj.file)
         width, height = im.size
-        print(width, height)
         if width > 1080 or height > 1080:
             raise ValidationError("Maximum file resolution is 1080.")
 
@@ -23,5 +22,5 @@ class Posts(models.Model):
         User, on_delete=models.CASCADE, related_name="owner")
     picture = models.ImageField(
         upload_to="post_pictures/", validators=[validate_image])
-    caption = models.TextField(max_length=1023, blank=True, null=True)
+    caption = models.TextField(max_length=1000, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
