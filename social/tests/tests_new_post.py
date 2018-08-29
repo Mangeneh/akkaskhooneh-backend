@@ -44,6 +44,20 @@ class PostTestCase(TestCase):
             'picture': self.generate_photo_file(4000, 4000),
             'caption': '1'
         }
-
         response = self.client.post("/social/create-new-post/", data, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_null_caption(self):
+        data = {
+            'picture': self.generate_photo_file(100, 100),
+        }
+        response = self.client.post("/social/create-new-post/", data, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_null_image(self):
+        data = {
+            'caption': '1'
+        }
+        response = self.client.post("/social/create-new-post/", data, format='multipart')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
