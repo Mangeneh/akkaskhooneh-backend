@@ -15,7 +15,7 @@ class CheckEmailApiView(APIView):
     def post(self, request):
         serializer = EmailSerializer(data=request.data)
         if serializer.is_valid():
-            email = request.POST.get('email')
+            email = request.data['email']
             try:
                 User.objects.get(email=email)
             except ObjectDoesNotExist:
