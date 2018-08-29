@@ -1,6 +1,7 @@
 from rest_framework import generics, pagination, status
 from rest_framework.response import Response
 
+import utils
 from social.models.posts import Posts
 from authentication.models.user import User
 from social.serializers.pagination import PaginationSerializer
@@ -20,6 +21,13 @@ class PaginationApiView(generics.ListAPIView):
     pagination_class = StandardPagination
 
     def get(self, request, username=None, *args, **kwargs):
+
+        ip = utils.get_client_ip(request)
+
+        utils.start_method_log('PaginationApiView: get',
+                               authorized_user=request.user.username,
+                               request_user=username)
+
         queryset = self.filter_queryset(self.get_queryset())
 
         update = {'owner': request.user}

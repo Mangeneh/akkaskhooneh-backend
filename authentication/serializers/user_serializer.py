@@ -5,6 +5,10 @@ from rest_framework import serializers
 
 from authentication.utils import get_simplejwt_tokens
 from authentication.models import User
+import utils
+import logging
+
+logger = logging.getLogger('authentication')
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -25,6 +29,13 @@ class UserSerializer(serializers.ModelSerializer):
                         }
 
     def create(self, validated_data):
+
+        log_data = validated_data.copy()
+
+        log_data.pop('password', None)
+
+        utils.start_method_log('UserSerializer: create', **log_data)
+
         username = validated_data.get("username")
         password = validated_data.get("password")
         email = validated_data.get("email")
@@ -46,6 +57,10 @@ class UserSerializer(serializers.ModelSerializer):
         return data
 
     def validate(self, data):
+        log_data = data.copy()
+        log_data.pop('password', None)
+        utils.start_method_log('UserSerializer: validate', **log_data)
+
         # here data has all the fields which have validated values
         # so we can create a User instance out of it
         user = User(**data)
@@ -60,13 +75,13 @@ class UserSerializer(serializers.ModelSerializer):
 
         # the exception raised here is different than serializers.ValidationError
         except ValidationError as e:
+            logger.info('UserSerializer: validate (username: {}: password not validated!)'.format(username))
             errors['password'] = list(e.messages)
-
         try:
             User.objects.check_username(username=username)
         except ValidationError as e:
+            logger.info('UserSerializer: validate (username {} not validated!)'.format(username))
             errors['username'] = e.message
-
         if errors:
             raise serializers.ValidationError(errors)
 
