@@ -1,9 +1,11 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 import utils
-from social.serializers.set_profile_serializer import SetProfilePicSerializer
+from django.core.exceptions import ValidationError
+import logging
+
+logger = logging.getLogger('social')
 
 
 class SetProfilePicViewSet(APIView):
@@ -13,11 +15,34 @@ class SetProfilePicViewSet(APIView):
         utils.start_method_log('SetProfilePicViewSet: post',
                                username=request.user.username,
                                ip=ip)
+        if request.FILES.get('profile_picture'):
+            try:
+                utils.validate_image(request.FILES.get('profile_picture'))
+            except ValidationError as e:
+                data = {
+                    "error": e
+                }
 
-        user = request.user
-        user.profile_picture = request.FILES.get('profile_picture')
-        if not user.profile_picture:
-            return Response(status=status.HTTP_400_BAD_REQUEST, data={'details': 'Your picture is not uploaded'})
-        user.save()
-        serializer = SetProfilePicSerializer(user)
-        return Response(serializer.data)
+                logger.info("SetProfilePicViewSet: post "
+                    "(Profile picture is not valid) username:{}, ip: {}".format(
+                        request.user.username, ip))
+
+                return Response(data=data, status=status.HTTP_400_BAD_REQUEST)
+
+            user = request.user
+            user.profile_picture = request.FILES.get('profile_picture')
+            user.save()
+
+            logger.info("SetProfilePicViewSet: post "
+                    "(Profile picture successfully changed.) username:{}, ip: {}".format(
+                        request.user.username, ip))
+
+            return Response(data={}, status=status.HTTP_200_OK)
+        else:
+            data = {
+                "error": ["Profile picture is required."]
+            }
+            logger.info("SetProfilePicViewSet: post "
+                    "(Profile picture is required.) username:{}, ip: {}".format(
+                        request.user.username, ip))
+            return Response(data=data, status=status.HTTP_400_BAD_REQUEST)

@@ -4,16 +4,22 @@ from django.contrib.auth.base_user import AbstractBaseUser
 
 from authentication.managers import UserManager
 from django.core.exceptions import ValidationError
+from PIL import Image
 
 
 class User(AbstractBaseUser, PermissionsMixin):
 
     def validate_image(fieldfile_obj):
         filesize = fieldfile_obj.file.size
-        megabyte_limit = 5.0
+        megabyte_limit = 3.0
         if filesize > megabyte_limit*1024*1024:
             raise ValidationError("Max file size is %sMB" %
                                   str(megabyte_limit))
+
+        im = Image.open(fieldfile_obj.file)
+        width, height = im.size
+        if width > 1080 or height > 1080:
+            raise ValidationError("Maximum file resolution is 1080.")
 
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=30, unique=True)
