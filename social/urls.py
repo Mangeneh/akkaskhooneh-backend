@@ -1,5 +1,6 @@
 from django.urls import path, include
 
+from social.views.board_datails_view import BoardDetailsAPI
 from social.views.create_new_post_api_view import CreateNewPostAPIView
 from social.views.profile_view_set import ProfileViewSet
 from social.views.set_profile_view_set import SetProfilePicViewSet
@@ -12,4 +13,5 @@ urlpatterns = [
     path('pictures/', PaginationApiView.as_view()),
     path('pictures/<str:username>', PaginationApiView.as_view()),
     path('create-new-post/', CreateNewPostAPIView.as_view()),
+    path('boardsdatails/<int:board_id>/', BoardDetailsAPI.as_view()),
 ]
