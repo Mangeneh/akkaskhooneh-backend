@@ -5,6 +5,7 @@ from social.views.profile_view_set import ProfileViewSet
 from social.views.set_profile_view_set import SetProfilePicViewSet
 from social.views.pagination import PaginationApiView
 from social.views.create_board_apiview import CreateNewBoardApiView
+from social.views.user_boards_api_view import UserBoardsApiView
 
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
@@ -14,4 +15,6 @@ urlpatterns = [
     path('pictures/<str:username>/', PaginationApiView.as_view()),
     path('create-new-post/', CreateNewPostAPIView.as_view()),
     path('create-new-board/', CreateNewBoardApiView.as_view()),
+    path('boards/', UserBoardsApiView.as_view()),
+    path('boards/<str:username>/', UserBoardsApiView.as_view())
 ]
