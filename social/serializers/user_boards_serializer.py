@@ -6,14 +6,20 @@ from utils import paginator
 class UserBoardsSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
     paginator = serializers.SerializerMethodField()
+    total_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('count', 'paginator')
+        fields = ('count', 'paginator', 'total_pages')
 
     def get_count(self, obj):
         count = Board.objects.filter(owner=obj.id).count()
         return count
+
+    def get_total_pages(self, obj):
+        all = Board.objects.filter(owner=obj.id).order_by('-id')
+        p = paginator(all)
+        return p.get('total_page')
 
     def get_paginator(self, obj):
 
