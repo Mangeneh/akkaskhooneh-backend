@@ -42,7 +42,10 @@ def validate_image(uploadedfile):
 
 def paginator(queryset, limit=10, page=1):
 
+    if page is None:
+        page = 1
     pages = Paginator(queryset, limit)
+    total_page = pages.num_pages
     result = pages.get_page(page)
     count = pages.count
     if result.has_next():
@@ -55,6 +58,7 @@ def paginator(queryset, limit=10, page=1):
         previous_page_number = None
     data = {
         "count": count,
+        "total_page": total_page,
         "next_page_number": next_page_number,
         "previous_page_number": previous_page_number,
         "result": result

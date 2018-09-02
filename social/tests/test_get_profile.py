@@ -15,10 +15,10 @@ class GetProfileTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_true_get_other_profile(self):
-        response = self.client.get("/social/profile/test")
+        response = self.client.get("/social/profile/test/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_wrong_get_other_profile(self):
-        response = self.client.get("/social/profile/testsksksnosnxsldln")
+        response = self.client.get("/social/profile/testsksksnosnxsldln/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

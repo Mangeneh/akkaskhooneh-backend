@@ -15,10 +15,10 @@ class PaginationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_true_get_other_posts(self):
-        response = self.client.get("/social/pictures/test")
+        response = self.client.get("/social/pictures/test/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_wrong_get_other_posts(self):
-        response = self.client.get("/social/pictures/testsksksnosnxsldln")
+        response = self.client.get("/social/pictures/testsksksnosnxsldln/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
