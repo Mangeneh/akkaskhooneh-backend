@@ -8,5 +8,5 @@ class Posts(models.Model):
         User, on_delete=models.CASCADE, related_name="owner")
     picture = models.ImageField(
         upload_to="post_pictures/", validators=[validate_image])
-    caption = models.TextField(max_length=1000, blank=True, null=True)
+    caption = models.CharField(max_length=1000, blank=True, null=True)
     time = models.DateTimeField(auto_now_add=True)
