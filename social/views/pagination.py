@@ -1,24 +1,16 @@
-from rest_framework import generics, pagination, status
+from rest_framework import status, views
 from rest_framework.response import Response
 
 import utils
 from social.models.posts import Posts
 from authentication.models.user import User
-from social.serializers.pagination import PaginationSerializer
 from django.core.exceptions import ObjectDoesNotExist
+from settings.base import MEDIA_URL
+import logging
 
+logger = logging.getLogger('social')
 
-class StandardPagination(pagination.PageNumberPagination):
-    page_size = 10
-    page_size_query_param = 'page_size'
-    max_page_size = 100
-
-
-class PaginationApiView(generics.ListAPIView):
-    """ This api view use for make pagination for pictures in user account"""
-    queryset = Posts.objects.all().order_by('-time')
-    serializer_class = PaginationSerializer
-    pagination_class = StandardPagination
+class PaginationApiView(views.APIView):
 
     def get(self, request, username=None, *args, **kwargs):
 
@@ -28,23 +20,42 @@ class PaginationApiView(generics.ListAPIView):
                                authorized_user=request.user.username,
                                request_user=username)
 
-        queryset = self.filter_queryset(self.get_queryset())
 
-        update = {'owner': request.user}
-        if username:
+        if username is None:
+            username = request.user.id
+        else:
             try:
-                us = User.objects.get(username=username)
+                username = User.objects.get(username=username)
             except ObjectDoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-            update.update({'owner': us})
+                data = {
+                    "error": "Username not found"
+                }
+                logger.info('PaginationApiView: get '
+                    '(Username not found) username:{}, ip: {}'.format(
+                        request.user.username, ip))
+                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
 
-        queryset = queryset.filter(**update)
-        page = self.paginate_queryset(queryset)
+        queryset = Posts.objects.filter(owner=username).order_by('-time')
 
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(queryset, many=True)
-
-        return Response(serializer.data)
+        page = request.GET.get('page')
+        pages = utils.paginator(queryset, page=page)
+        results = pages.get('result')
+        count = pages.get('count')
+        total_page = pages.get('total_page')
+        results_list = []
+        for post in results:
+            item = {
+                "id": post.id,
+                "picture": str(request.scheme) + "://" + request.get_host() +
+                MEDIA_URL + str(post.picture)
+            }
+            results_list.append(item)
+        data = {
+            "count": count,
+            "total_page": total_page,
+            "results": results_list
+        }
+        logger.info('PaginationApiView: get '
+                    '(get posts of {}) username:{}, ip: {}'.format(
+                        username, request.user.username, ip))
+        return Response(data=data, status=status.HTTP_200_OK)
