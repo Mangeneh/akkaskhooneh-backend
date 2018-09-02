@@ -1,8 +1,8 @@
-from django import forms
+from rest_framework.serializers import ModelSerializer
 from social.models import Board
 
 
-class CreateNewBoardForm(forms.ModelForm):
+class CreateNeqBoardSerializer(ModelSerializer):
 
     class Meta:
         model = Board

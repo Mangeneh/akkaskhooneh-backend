@@ -2,6 +2,7 @@ from rest_framework import views, status
 from rest_framework.response import Response
 from social.models import Board
 from social.forms import CreateNewBoardForm
+from social.serializers.create_new_board import CreateNeqBoardSerializer
 import logging
 import utils
 
@@ -19,13 +20,23 @@ class CreateNewBoardApiView(views.APIView):
 
         data = request.data.copy()
         data['owner'] = request.user.id
-        board = CreateNewBoardForm(data)
-        if board.is_valid():
+        serializer = CreateNeqBoardSerializer(data=data)
+
+        if serializer.is_valid():
+            board = Board(
+                owner=request.user,
+                name= serializer.data.get('name')
+                )
             board.save()
             logger.info('CreateNewBoardApiView: post '
                 '(created successfully) username:{}, ip: {}'.format(
                     request.user.username, ip))
-            return Response(status=status.HTTP_201_CREATED)
+            return Response(
+                data={
+                    "id": board.id
+                },
+                status=status.HTTP_201_CREATED
+                )
         else:
             logger.info('CreateNewBoardApiView: post '
                 '(Request is not good.) username:{}, ip: {}'.format(
