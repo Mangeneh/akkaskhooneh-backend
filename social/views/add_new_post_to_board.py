@@ -11,8 +11,8 @@ logger = logging.getLogger('social')
 
 
 class AddNewPostToBoard(APIView):
-    # http_method_names = ['post']
-    # permission_classes = (permissions.IsAuthenticated,)
+    http_method_names = ['post']
+    permission_classes = (permissions.IsAuthenticated,)
 
     @staticmethod
     def _validate_data(request, data):
