@@ -8,4 +8,5 @@ from .create_board_apiview import CreateNewBoardApiView
 from .user_boards_api_view import UserBoardsApiView
 from .delete_post_from_board import DeletePostFromBoard
 from .delete_board import DeleteBoard
+from .user_search_api_view import UserSearchApiView
 from .feed_api_view import FeedAPI
