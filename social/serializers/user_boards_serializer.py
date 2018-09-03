@@ -13,11 +13,11 @@ class UserBoardsSerializer(serializers.ModelSerializer):
         fields = ('count', 'paginator', 'total_pages')
 
     def get_count(self, obj):
-        count = Board.objects.filter(owner=obj.id).count()
+        count = self.context.get("data").count()
         return count
 
     def get_total_pages(self, obj):
-        all = Board.objects.filter(owner=obj.id).order_by('-id')
+        all = self.context.get("data")
         p = paginator(all)
         return p.get('total_page')
 
@@ -25,7 +25,7 @@ class UserBoardsSerializer(serializers.ModelSerializer):
 
         page = self.context.get("page")
         url = self.context.get("url")
-        all = Board.objects.filter(owner=obj.id).order_by('-id')
+        all = self.context.get("data")
         p = paginator(all, page=page)
 
         result = p.get('result')

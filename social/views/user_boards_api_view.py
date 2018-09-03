@@ -6,7 +6,7 @@ import utils
 from authentication.models import User
 from social.serializers.user_boards_serializer import UserBoardsSerializer
 from settings.base import MEDIA_URL
-
+from social.models import Board
 
 class UserBoardsApiView(APIView):
 
@@ -29,5 +29,6 @@ class UserBoardsApiView(APIView):
             page = 1
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        serializer = UserBoardsSerializer(user, context={'page': page, 'url': url})
+        data = Board.objects.filter(owner=user).order_by('-id')
+        serializer = UserBoardsSerializer(user, context={'page': page, 'url': url, 'data': data})
         return Response(serializer.data)
