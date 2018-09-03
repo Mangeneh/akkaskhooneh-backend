@@ -7,9 +7,10 @@ from authentication.models import User
 from social.serializers.user_boards_serializer import UserBoardsSerializer
 from settings.base import MEDIA_URL
 
+
 class UserBoardsApiView(APIView):
 
-   def get(self, request, username=None, format=None):
+    def get(self, request, username=None, format=None):
 
         ip = utils.get_client_ip(request)
 
@@ -17,7 +18,7 @@ class UserBoardsApiView(APIView):
                                username=request.user.username, ip=ip)
 
         user = request.user
-        if username is not None :
+        if username is not None:
             user = User.objects.filter(username=username).first()
             if user is None:
                 response_content = {"detail": "User not found."}
@@ -30,4 +31,3 @@ class UserBoardsApiView(APIView):
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
         serializer = UserBoardsSerializer(user, context={'page': page, 'url': url})
         return Response(serializer.data)
-
