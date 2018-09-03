@@ -3,6 +3,7 @@ from django.urls import path, include
 from social.views.add_new_post_to_board import AddNewPostToBoard
 from social.views.board_datails_view import BoardDetailsAPI
 from social.views.create_new_post_api_view import CreateNewPostAPIView
+from social.views.delete_board import DeleteBoard
 from social.views.profile_view_set import ProfileViewSet
 from social.views.set_profile_view_set import SetProfilePicViewSet
 from social.views.pagination import PaginationApiView
@@ -21,4 +22,5 @@ urlpatterns = [
     path('boards/', UserBoardsApiView.as_view()),
     path('boards/<str:username>/', UserBoardsApiView.as_view()),
     path('addnewposttoboard/', AddNewPostToBoard.as_view()),
+    path('deleteboard/', DeleteBoard.as_view()),
 ]
