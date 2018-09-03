@@ -9,3 +9,9 @@ class Followers(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+
+
+class Request(models.Model):
+
+    requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requester')
+    requestee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requestee')

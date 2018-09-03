@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from social.views import AddNewPostToBoard
+from social.views import AddNewPostToBoard, FeedAPI
 from social.views import BoardDetailsAPI
 from social.views import CreateNewPostAPIView
 from social.views import ProfileViewSet
@@ -11,6 +11,7 @@ from social.views import UserBoardsApiView
 from social.views import DeletePostFromBoard
 from social.views import DeleteBoard
 from social.views import PostDetailApiView
+from social.views import UserSearchApiView
 
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
@@ -27,4 +28,6 @@ urlpatterns = [
     path('deletepostfromboard/', DeletePostFromBoard.as_view()),
     path('deleteboard/', DeleteBoard.as_view()),
     path('post/<int:id>/', PostDetailApiView.as_view()),
+    path('usersearch/', UserSearchApiView.as_view()),
+    path('feed/', FeedAPI.as_view())
 ]
