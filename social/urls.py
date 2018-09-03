@@ -9,6 +9,7 @@ from social.views import PaginationApiView
 from social.views import CreateNewBoardApiView
 from social.views import UserBoardsApiView
 from social.views import DeletePostFromBoard
+from social.views import DeleteBoard
 
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
@@ -23,4 +24,5 @@ urlpatterns = [
     path('boards/<str:username>/', UserBoardsApiView.as_view()),
     path('addnewposttoboard/', AddNewPostToBoard.as_view()),
     path('deletepostfromboard/', DeletePostFromBoard.as_view()),
+    path('deleteboard/', DeleteBoard.as_view()),
 ]
