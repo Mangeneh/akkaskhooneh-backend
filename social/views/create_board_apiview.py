@@ -1,7 +1,6 @@
 from rest_framework import views, status
 from rest_framework.response import Response
 from social.models import Board
-from social.forms import CreateNewBoardForm
 from social.serializers.create_new_board import CreateNeqBoardSerializer
 import logging
 import utils

@@ -1,2 +1,1 @@
 from .create_new_post import CreateNewPost
-from .create_new_board import CreateNewBoardForm
