@@ -7,12 +7,12 @@ from utils import paginator
 
 class FeedSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
-    paginator = serializers.SerializerMethodField()
+    posts = serializers.SerializerMethodField()
     total_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('count', 'paginator', 'total_pages')
+        fields = ('count', 'posts', 'total_pages')
 
     def get_count(self, obj):
         count = self.context.get('posts').count()
@@ -24,7 +24,7 @@ class FeedSerializer(serializers.ModelSerializer):
 
         return p.get('total_page')
 
-    def get_paginator(self, obj):
+    def get_posts(self, obj):
         page = self.context.get("page")
         url = self.context.get("url")
         all = self.context.get("posts")
