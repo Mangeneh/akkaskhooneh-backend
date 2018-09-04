@@ -11,4 +11,5 @@ from .delete_board import DeleteBoard
 from .post_detail import PostDetailApiView
 from .user_search_api_view import UserSearchApiView
 from .feed_api_view import FeedAPI
+from .top_hasgtag_list import TopHashtagListApiView
 from .tag_search_api_view import TagSearchApiView
