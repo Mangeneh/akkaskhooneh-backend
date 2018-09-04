@@ -5,12 +5,12 @@ from utils import paginator
 
 class UserSearchSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
-    users = serializers.SerializerMethodField()
+    results = serializers.SerializerMethodField()
     total_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('count', 'total_pages', 'users')
+        fields = ('count', 'total_pages', 'results')
 
     def get_count(self, obj):
         count = self.context.get("data").count()
@@ -21,7 +21,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
         p = paginator(all)
         return p.get('total_page')
 
-    def get_users(self, obj):
+    def get_results(self, obj):
 
         page = self.context.get("page")
         url = self.context.get("url")

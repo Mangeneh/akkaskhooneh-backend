@@ -52,7 +52,7 @@ class PaginationApiView(views.APIView):
             results_list.append(item)
         data = {
             "count": count,
-            "total_page": total_page,
+            "total_pages": total_page,
             "results": results_list
         }
         logger.info('PaginationApiView: get '

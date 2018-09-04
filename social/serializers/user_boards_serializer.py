@@ -5,12 +5,12 @@ from utils import paginator
 
 class UserBoardsSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
-    boards = serializers.SerializerMethodField()
+    results = serializers.SerializerMethodField()
     total_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('count', 'boards', 'total_pages')
+        fields = ('count', 'total_pages', 'results')
 
     def get_count(self, obj):
         count = self.context.get("data").count()
@@ -21,7 +21,7 @@ class UserBoardsSerializer(serializers.ModelSerializer):
         p = paginator(all)
         return p.get('total_page')
 
-    def get_boards(self, obj):
+    def get_results(self, obj):
 
         page = self.context.get("page")
         url = self.context.get("url")
