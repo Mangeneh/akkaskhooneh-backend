@@ -11,7 +11,7 @@ logger = logging.getLogger('social')
 
 
 class DeletePostFromBoard(APIView):
-    http_method_names = ['delete']
+    http_method_names = ['post']
     permission_classes = (permissions.IsAuthenticated,)
 
     @staticmethod
@@ -47,7 +47,7 @@ class DeletePostFromBoard(APIView):
 
         return True
 
-    def delete(self, request):
+    def post(self, request):
 
         ip = utils.get_client_ip(request)
 

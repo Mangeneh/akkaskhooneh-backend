@@ -11,7 +11,7 @@ logger = logging.getLogger('social')
 
 
 class DeleteBoard(APIView):
-    http_method_names = ['delete']
+    http_method_names = ['post']
     permission_classes = (permissions.IsAuthenticated,)
 
     @staticmethod
@@ -31,7 +31,7 @@ class DeleteBoard(APIView):
         if board.owner != request.user:
             raise ValidationError("it's not your board!")
 
-    def delete(self, request):
+    def post(self, request):
         ip = utils.get_client_ip(request)
 
         utils.start_method_log('DeleteBoard: post', username=request.user.username, ip=ip)
