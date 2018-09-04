@@ -30,9 +30,6 @@ class UserSearchApiView(APIView):
         search_array = search_value.split(' ')
 
         data = User.objects.filter(Q(username__icontains=search_value) | Q(reduce(or_, [Q(fullname__icontains=q) for q in search_array]))).order_by('-id')
-
-        print(search_value)
-
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
         serializer = UserSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,'request_user': self.request.user})
         return Response(serializer.data)
