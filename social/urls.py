@@ -20,7 +20,7 @@ urlpatterns = [
     path('pictures/', PaginationApiView.as_view()),
     path('pictures/<str:username>/', PaginationApiView.as_view()),
     path('create-new-post/', CreateNewPostAPIView.as_view()),
-    path('boardsdatails/<int:board_id>/', BoardDetailsAPI.as_view()),
+    path('boardsdetails/<int:board_id>/', BoardDetailsAPI.as_view()),
     path('create-new-board/', CreateNewBoardApiView.as_view()),
     path('boards/', UserBoardsApiView.as_view()),
     path('boards/<str:username>/', UserBoardsApiView.as_view()),
