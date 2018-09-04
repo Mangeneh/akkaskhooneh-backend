@@ -14,9 +14,9 @@ class ProfileSerializer(serializers.ModelSerializer):
                   'fullname', 'bio', 'following', 'followers', 'email', 'profile_picture')
 
     def get_followers(self, obj):
-        followers = Followers.objects.filter(user=obj.id).count()
+        followers = Followers.objects.filter(following=obj.id).count()
         return followers
 
     def get_following(self, obj):
-        following = Followers.objects.filter(following=obj.id).count()
+        following = Followers.objects.filter(user=obj.id).count()
         return following
