@@ -32,7 +32,7 @@ class CreateBoardTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_null_name(self):
-        response = self.client.post("/social/create-new-board/", data={'name': None})
+        response = self.client.post("/social/create-new-board/", data={'name': None}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_no_name(self):
