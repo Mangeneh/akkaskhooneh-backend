@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 import utils
 from authentication.models import User
-from social.models import  Followers
+from social.models import Followers
 from social.serializers.user_boards_serializer import UserBoardsSerializer
 from settings.base import MEDIA_URL
 from social.models import Board
