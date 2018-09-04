@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from social.views import *
 
+
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
     path('profile/', ProfileViewSet.as_view()),
@@ -24,5 +25,6 @@ urlpatterns = [
     path('search/following/<str:username>/', FollowingSearchApiView().as_view()),
     path('followers/<str:username>/', FollowerSearchApiView().as_view()),
     path('following/<str:username>/', FollowingSearchApiView().as_view()),
-
+    path('tophashtag/', TopHashtagListApiView.as_view()),
+    path('tagsearch/', TagSearchApiView.as_view()),
 ]
