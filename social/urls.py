@@ -13,6 +13,7 @@ from social.views import DeleteBoard
 from social.views import PostDetailApiView
 from social.views import UserSearchApiView
 from social.views import TopHashtagListApiView
+from social.views import TagSearchApiView
 
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
@@ -32,4 +33,5 @@ urlpatterns = [
     path('usersearch/', UserSearchApiView.as_view()),
     path('feed/', FeedAPI.as_view()),
     path('tophashtag/', TopHashtagListApiView.as_view())
+    path('tagsearch/', TagSearchApiView.as_view()),
 ]
