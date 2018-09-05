@@ -1,1 +1,2 @@
 from .get_posts_serializer import GetPostsSerializer
+from .flw_request_serializer import FolloweReqSerializer
