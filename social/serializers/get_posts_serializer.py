@@ -5,7 +5,7 @@ from social.models import Like, Comment
 from utils import paginator
 
 
-class FeedSerializer(serializers.ModelSerializer):
+class GetPostsSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
     results = serializers.SerializerMethodField()
     total_pages = serializers.SerializerMethodField()

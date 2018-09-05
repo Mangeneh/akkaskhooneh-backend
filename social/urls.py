@@ -2,7 +2,6 @@ from django.urls import path, include
 
 from social.views import *
 
-
 urlpatterns = [
     path('profile/<str:username>/', ProfileViewSet.as_view()),
     path('profile/', ProfileViewSet.as_view()),
@@ -27,4 +26,5 @@ urlpatterns = [
     path('following/<str:username>/', FollowingSearchApiView().as_view()),
     path('tophashtag/', TopHashtagListApiView.as_view()),
     path('request/', FollowRequest.as_view())
+    path('tag/<int:tag_id>/', GetPostOfTagAPI.as_view()),
 ]
