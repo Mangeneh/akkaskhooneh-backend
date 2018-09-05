@@ -52,7 +52,7 @@ class BoardDetailsAPI(APIView):
 
             return Response(data, status.HTTP_400_BAD_REQUEST)
 
-        posts = BoardContains.objects.filter(board=board_id).values('post_id', 'post__picture')
+        posts = BoardContains.objects.filter(board=board_id).order_by('-id').values('post_id', 'post__picture')
         utils.paginator(posts)
 
         page = request.GET.get('page')
