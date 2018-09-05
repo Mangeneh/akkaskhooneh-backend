@@ -25,6 +25,9 @@ urlpatterns = [
     path('followers/<str:username>/', FollowerSearchApiView().as_view()),
     path('following/<str:username>/', FollowingSearchApiView().as_view()),
     path('tophashtag/', TopHashtagListApiView.as_view()),
+    path('request/', FollowRequest.as_view()),
     path('tag/<int:tag_id>/', GetPostOfTagAPI.as_view()),
     path('request/accept/', AcceptFollowRequestAPIView.as_view()),
+    path('followrequest/', GetFollowReqAPI.as_view()),
+    path('like/', LikeAPI.as_view()),
 ]

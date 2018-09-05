@@ -12,6 +12,6 @@ class Followers(models.Model):
 
 
 class Request(models.Model):
-
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requester')
     requestee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requestee')
+    request_time = models.DateTimeField(auto_now_add=True)
