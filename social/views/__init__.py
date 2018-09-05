@@ -17,5 +17,7 @@ from .follower_search_api_view import FollowerSearchApiView
 from .following_search_api_view import FollowingSearchApiView
 from .follow_request_api import FollowRequest
 from .get_posts_of_hashtag import GetPostOfTagAPI
+from .get_follow_request_api_view import GetFollowReqAPI
+from .like_view import LikeAPI
 from .get_posts_of_hashtag import GetPostOfTagAPI
 from .get_follow_request_api_view import GetFollowReqAPI
