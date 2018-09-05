@@ -31,7 +31,6 @@ class FolloweReqSerializer(serializers.ModelSerializer):
         result = p.get('result')
         result_list = []
         for req in result:
-            print(req.request_time)
             item = {
                 'id': req.id,
                 'requester_username': req.requester.username,
