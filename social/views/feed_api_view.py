@@ -19,7 +19,7 @@ class FeedAPI(APIView):
         page = request.GET.get('page')
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        posts = Posts.objects.filter(owner__user__following=user).order_by("-time")
+        posts = Posts.objects.filter(owner__following__user=user).order_by("-time")
         serializer = FeedSerializer(user, context={'page': page, 'url': url, 'posts': posts})
 
         return Response(serializer.data)
