@@ -15,6 +15,8 @@ from .top_hasgtag_list import TopHashtagListApiView
 from .tag_search_api_view import TagSearchApiView
 from .follower_search_api_view import FollowerSearchApiView
 from .following_search_api_view import FollowingSearchApiView
+from .get_posts_of_hashtag import GetPostOfTagAPI
+from .accept_follow_request import AcceptFollowRequestAPIView
 from .follow_request_api import FollowRequest
 from .get_posts_of_hashtag import GetPostOfTagAPI
 from .get_follow_request_api_view import GetFollowReqAPI
