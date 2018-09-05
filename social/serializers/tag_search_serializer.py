@@ -41,7 +41,7 @@ class TagSearchSerializer(serializers.ModelSerializer):
             item = {
                 'id': tag.id,
                 'name': tag.name,
-                'picture': picture,
+                'picture': picture
             }
             result_list.append(item)
 
