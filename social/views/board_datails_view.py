@@ -28,7 +28,7 @@ class BoardDetailsAPI(APIView):
         if board.owner.id == request.user.id:
             return True
 
-        flw = Followers.objects.filter(user=request.user).filter(following=board.owner)
+        flw = Followers.objects.filter(user=request.user, following=board.owner)
 
         if len(flw) != 0:
             return True
