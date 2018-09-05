@@ -11,7 +11,7 @@ class LikeAPI(APIView):
     @staticmethod
     def _validate_data(request, data):
         ip = utils.get_client_ip(request)
-        utils.start_method_log('AddNewPostToBoard: _validate_data',
+        utils.start_method_log('LikeApi: _validate_data',
                                username=request.user.username, ip=ip)
 
         post_id = data.get('post_id')
