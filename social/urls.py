@@ -26,5 +26,4 @@ urlpatterns = [
     path('followers/<str:username>/', FollowerSearchApiView().as_view()),
     path('following/<str:username>/', FollowingSearchApiView().as_view()),
     path('tophashtag/', TopHashtagListApiView.as_view()),
-    path('tagsearch/', TagSearchApiView.as_view()),
 ]
