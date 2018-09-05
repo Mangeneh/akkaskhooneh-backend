@@ -1,0 +1,1 @@
+from .get_posts_serializer import GetPostsSerializer
