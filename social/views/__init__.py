@@ -15,3 +15,4 @@ from .top_hasgtag_list import TopHashtagListApiView
 from .tag_search_api_view import TagSearchApiView
 from .follower_search_api_view import FollowerSearchApiView
 from .following_search_api_view import FollowingSearchApiView
+from .get_posts_of_hashtag import GetPostOfTagAPI
