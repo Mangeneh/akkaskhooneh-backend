@@ -10,8 +10,16 @@ class Followers(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
 
+    class Meta:
+        unique_together = ('user', 'following')
+
 
 class Request(models.Model):
     requester = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requester')
     requestee = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requestee')
     request_time = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('requester', 'requestee')
+
+

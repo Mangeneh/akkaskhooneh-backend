@@ -11,3 +11,6 @@ class Tags(models.Model):
 class TagContains(models.Model):
     tag = models.ForeignKey(Tags, on_delete=models.CASCADE)
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('tag', 'post')

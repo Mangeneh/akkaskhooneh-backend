@@ -7,6 +7,9 @@ class Board(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=20)
 
+    class Meta:
+        unique_together = ('owner', 'name')
+
 
 class BoardContains(models.Model):
     board = models.ForeignKey(Board, on_delete=models.CASCADE)
