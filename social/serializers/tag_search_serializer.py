@@ -31,12 +31,17 @@ class TagSearchSerializer(serializers.ModelSerializer):
 
         result = p.get('result')
         result_list = []
-
         for tag in result:
+
+            all_pic = TagContains.objects.filter(tag=tag).order_by('-id')
+            if len(all_pic) == 0:
+                continue
+            picture = url + str(all_pic[0].post.picture)
 
             item = {
                 'id': tag.id,
                 'name': tag.name,
+                'picture': picture,
             }
             result_list.append(item)
 
