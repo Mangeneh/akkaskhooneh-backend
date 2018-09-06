@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from authentication.models import User
 from social.models import Request, Followers
 from django.core.exceptions import ObjectDoesNotExist
+from django.db import IntegrityError
 
 
 class FollowRequest(views.APIView):
@@ -44,7 +45,7 @@ class FollowRequest(views.APIView):
                 else:
                     return Response(
                         data={
-                            "details": "You are already requested fore follow this user."
+                            "details": "You are already requested for follow this user."
                         },
                         status=status.HTTP_400_BAD_REQUEST
                     )
@@ -59,11 +60,16 @@ class FollowRequest(views.APIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             except ObjectDoesNotExist:
-                follow_create = Followers(
-                    user=request.user,
-                    following=target_user_query_set
-                )
-                follow_create.save()
+                try:
+                    Followers.objects.create(
+                        user=request.user,
+                        following=target_user_query_set
+                    )
+                except IntegrityError:
+                    return Response(
+                        data={"details": "This object already exist."},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
                 return Response(
                     data={"details": "You are successfully follow this user."},
                     status=status.HTTP_200_OK
