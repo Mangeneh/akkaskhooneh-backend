@@ -52,7 +52,8 @@ class AddNewPostToBoard(APIView):
         if not post.owner.is_private:
             return True
 
-        flw = Followers.objects.filter(user=user_id, following=post.owner).all()
+        flw = Followers.objects.filter(
+            user=user_id, following=post.owner).all()
         if len(flw) != 0:
             return True
 
@@ -62,7 +63,8 @@ class AddNewPostToBoard(APIView):
 
         ip = utils.get_client_ip(request)
 
-        utils.start_method_log('AddNewPostToBoard: post', username=request.user.username, ip=ip)
+        utils.start_method_log('AddNewPostToBoard: post',
+                               username=request.user.username, ip=ip)
 
         data = request.data
         errors = {}

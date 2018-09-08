@@ -1,7 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from django.db import IntegrityError
 from social.models import Posts, Tags, TagContains, Request, Followers
 import utils
 import logging
@@ -33,8 +33,15 @@ class AcceptFollowRequestAPIView(APIView):
             return Response({'details': 'this is not your request'}, status=status.HTTP_400_BAD_REQUEST)
 
         if data['accept'] == True:
-            Followers.objects.create(user=requester, following=request.user)
+            try:
+                Followers.objects.create(
+                    user=requester, following=request.user)
+            except IntegrityError:
+                return Response(
+                    data={"details": "This object already exist."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
         request_data[0].delete()
 
-        return Response({'succes': 'True'}, status=status.HTTP_201_CREATED)
+        return Response({'succes': True}, status=status.HTTP_201_CREATED)
