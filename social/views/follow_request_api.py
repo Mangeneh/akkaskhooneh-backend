@@ -10,6 +10,11 @@ class FollowRequest(views.APIView):
 
     def post(self, request):
         target_user_name = request.data.get('username')
+        if target_user_name == request.user.username:
+            return Response(
+                data={"error": "you connot follow yourself"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
         if target_user_name is None:
             return Response(
                 data={"error": "Username required."},
@@ -72,5 +77,5 @@ class FollowRequest(views.APIView):
                     )
                 return Response(
                     data={"details": "You are successfully follow this user."},
-                    status=status.HTTP_200_OK
+                    status=status.HTTP_201_CREATED
                 )

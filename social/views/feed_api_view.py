@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,7 +20,7 @@ class FeedAPI(APIView):
         page = request.GET.get('page')
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        posts = Posts.objects.filter(owner__following__user=user).order_by("-time")
+        posts = Posts.objects.filter(Q(owner__following__user=user) | Q(owner=user)).order_by("-time")
         serializer = GetPostsSerializer(user, context={'page': page, 'url': url, 'posts': posts})
 
         return Response(serializer.data)

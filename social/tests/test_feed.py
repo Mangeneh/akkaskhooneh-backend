@@ -28,7 +28,7 @@ class FeedTest(TestCase):
         post = Posts.objects.create(owner=self.user1, picture='1.png')
         response = self.client.get("/social/feed/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 0)
+        self.assertEqual(len(response.data['results']), 1)
 
     def test_has_following_feed(self):
         Followers.objects.create(user=self.user2, following=self.user1)
