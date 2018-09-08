@@ -30,4 +30,5 @@ urlpatterns = [
     path('request/accept/', AcceptFollowRequestAPIView.as_view()),
     path('followrequest/', GetFollowReqAPI.as_view()),
     path('like/', LikeAPI.as_view()),
+    path('comment/', CommentAPIView.as_view()),
 ]

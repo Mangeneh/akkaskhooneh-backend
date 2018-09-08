@@ -23,3 +23,4 @@ from .get_follow_request_api_view import GetFollowReqAPI
 from .like_view import LikeAPI
 from .get_posts_of_hashtag import GetPostOfTagAPI
 from .get_follow_request_api_view import GetFollowReqAPI
+from .comment_api_view import CommentAPIView

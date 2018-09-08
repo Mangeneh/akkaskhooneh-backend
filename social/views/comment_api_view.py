@@ -4,26 +4,33 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import utils
-from social.models import Posts, Like, Followers
+from social.models import Posts, Comment, Followers
 
 
-class LikeAPI(APIView):
+class CommentAPIView(APIView):
     @staticmethod
     def _validate_data(request, data):
         ip = utils.get_client_ip(request)
-        utils.start_method_log('LikeApi: _validate_data',
+        utils.start_method_log('CommentApiView: _validate_data',
                                username=request.user.username, ip=ip)
 
         post_id = data.get('post_id')
+        content = data.get('content')
         user_id = request.user.id
 
         if post_id is None:
             raise ValidationError('post_id must be set.')
 
+        if content is None or len(content) == 0:
+            raise ValidationError('content must be set.')
+
+        if len(content) > 1000:
+            raise ValidationError('content is too big.')
+
         try:
             post = Posts.objects.get(id=post_id)
         except:
-            raise ValidationError('post is not exists')
+            raise ValidationError('post does not exists')
 
         if not post.owner.is_private:
             return True
@@ -47,17 +54,18 @@ class LikeAPI(APIView):
         errors = {}
 
         try:
-            LikeAPI._validate_data(request, data)
+            CommentAPIView._validate_data(request, data)
         except ValidationError as e:
             errors['details'] = list(e.messages)
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
         post_id = data.get('post_id')
+        content = data.get('content')
         post = Posts.objects.get(id=post_id)
 
-        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        try:
+            comment = Comment.objects.create(user=request.user, post=post, content=content)
+        except:
+            return Response({"details": 'comment already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        if not created:
-            like.delete()
-
-        return Response({'liked': created}, status=status.HTTP_200_OK)
+        return Response({'details': 'created'}, status=status.HTTP_201_CREATED)
