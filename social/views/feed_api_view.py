@@ -20,7 +20,11 @@ class FeedAPI(APIView):
         page = request.GET.get('page')
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        posts = Posts.objects.filter(Q(owner__following__user=user) | Q(owner=user)).order_by("-time")
-        serializer = GetPostsSerializer(user, context={'page': page, 'url': url, 'posts': posts})
+
+        posts_of_followers = Posts.objects.filter(owner__following__user=user)
+        posts_of_user = Posts.objects.filter(owner=user)
+        posts = (posts_of_followers | posts_of_user).distinct().order_by("-time")
+
+        serializer = GetPostsSerializer(user, context={'page': page, 'url': url, 'posts': posts, 'user': user})
 
         return Response(serializer.data)
