@@ -13,5 +13,8 @@ urlpatterns = [
     path('login/', token_obtain_pair, name='token_obtain_pair'),
     path('token/refresh/', token_refresh, name='token_refresh'),
     path('token/verify/', token_verify, name='token_verify'),
-    path('checkemail/', views.CheckEmailApiView.as_view())
+    path('checkemail/', views.CheckEmailApiView.as_view()),
+    path('forgotpassword/', views.ForgotPasswordApiView.as_view()),
+    path('forgotpassword/verify/', views.ForgotPasswordVerfication.as_view()),
+    path('forgotpassword/complete/', views.ForgotPasswordComplete.as_view()),
 ]
