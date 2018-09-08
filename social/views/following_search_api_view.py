@@ -33,6 +33,10 @@ class FollowingSearchApiView(APIView):
         if search_value is None:
             search_value = ''
 
+        if user != request.user and user.is_private == True:
+            if Followers.objects.filter(user=request.user, following=user).count() == 0:
+                return Response({'details': 'You cannot see him/her followings.'}, status=status.HTTP_400_BAD_REQUEST)
+
         search_array = search_value.split(' ')
         following_query_set = Followers.objects.filter(user=user).order_by('-id')
 
