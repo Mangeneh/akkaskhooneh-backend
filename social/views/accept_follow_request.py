@@ -44,4 +44,4 @@ class AcceptFollowRequestAPIView(APIView):
 
         request_data[0].delete()
 
-        return Response({'succes': 'True'}, status=status.HTTP_201_CREATED)
+        return Response({'succes': True}, status=status.HTTP_201_CREATED)
