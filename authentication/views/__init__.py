@@ -3,3 +3,4 @@ from .change_password_api_view import *
 from .check_email_api_view import *
 from .edit_profile_api_view import *
 from .forgot_password import *
+from .change_private_status_api_view import ChangePrivateStatus
