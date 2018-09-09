@@ -14,7 +14,7 @@ class PostDetailApiView(APIView):
             post = Posts.objects.get(id=id)
         except ObjectDoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        
+
         profile_private = post.owner.is_private
         if profile_private:
             post_owner = post.owner
@@ -23,7 +23,7 @@ class PostDetailApiView(APIView):
                 follow_status = Followers.objects.get(
                     user=user_profile,
                     following=post_owner
-                    )
+                )
             except ObjectDoesNotExist:
                 return Response(status=status.HTTP_403_FORBIDDEN)
         likes_count = Like.objects.filter(post=post).count()
@@ -38,7 +38,7 @@ class PostDetailApiView(APIView):
             is_liked = True
         except ObjectDoesNotExist:
             is_liked = False
-        
+
         data = {
             "picture": url + str(post.picture),
             "caption": post.caption,
@@ -47,8 +47,8 @@ class PostDetailApiView(APIView):
             "comments_count": comments_count,
             "tags_list": tags_list,
             "profile_picture": url + str(post.owner.profile_picture),
-            "username": post.owner.username
+            "username": post.owner.username,
+            "time": post.time
         }
 
-            
         return Response(data=data, status=status.HTTP_200_OK)
