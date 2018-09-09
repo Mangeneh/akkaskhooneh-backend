@@ -66,6 +66,7 @@ class GetCommentsApiView(views.APIView):
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
         for cm in results:
             item = {
+                "id": cm.id,
                 "username": cm.user.username,
                 "profile_picture": url + str(cm.user.profile_picture),
                 "comment": cm.content,
