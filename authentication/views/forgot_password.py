@@ -78,6 +78,7 @@ class ForgotPasswordVerfication(views.APIView):
                 status=status.HTTP_200_OK
             )
         else:
+            token_query_set.delete()
             return Response(
                 data={"details": "Token is invalid"},
                 status=status.HTTP_401_UNAUTHORIZED
@@ -118,6 +119,7 @@ class ForgotPasswordComplete(views.APIView):
             user_query_set = User.objects.get(user=token_query_set.user)
             user_query_set.set_password(password)
             user_query_set.save()
+            token_query_set.delete()
             return Response(
                 data={"details": "Password Changed."},
                 status=status.HTTP_200_OK
