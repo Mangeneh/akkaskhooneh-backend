@@ -25,4 +25,5 @@ from .get_posts_of_hashtag import GetPostOfTagAPI
 from .get_follow_request_api_view import GetFollowReqAPI
 from .comment_api_view import CommentAPIView
 from .get_comment_api import GetCommentsApiView
+from .delete_request_api import DeleteFollowRequest
 from .unfollow_api_view import UnfollowApiView
