@@ -2,13 +2,14 @@ from rest_framework import status, views
 from rest_framework.response import Response
 
 import utils
-from social.models.posts import Posts
-from authentication.models.user import User
+from social.models import Posts, Followers
+from authentication.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from settings.base import MEDIA_URL
 import logging
 
 logger = logging.getLogger('social')
+
 
 class PaginationApiView(views.APIView):
 
@@ -20,24 +21,34 @@ class PaginationApiView(views.APIView):
                                authorized_user=request.user.username,
                                request_user=username)
 
-
         if username is None:
-            username = request.user.id
-        else:
+            username = request.user.username
+        try:
+            profile = User.objects.get(username=username)
+        except ObjectDoesNotExist:
+            data = {
+                "error": "Username not found"
+            }
+            logger.info('PaginationApiView: get '
+                        '(Username not found) username:{}, ip: {}'.format(
+                            request.user.username, ip))
+            return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+
+        profile_private = profile.is_private
+        target_profile = profile
+        user_profile = request.user
+        if target_profile != user_profile and profile_private:
             try:
-                username = User.objects.get(username=username)
+                follow_status = Followers.objects.get(
+                    user=user_profile,
+                    following=target_profile
+                )
             except ObjectDoesNotExist:
-                data = {
-                    "error": "Username not found"
-                }
-                logger.info('PaginationApiView: get '
-                    '(Username not found) username:{}, ip: {}'.format(
-                        request.user.username, ip))
-                return Response(data=data, status=status.HTTP_404_NOT_FOUND)
+                return Response(status=status.HTTP_403_FORBIDDEN)
 
-        queryset = Posts.objects.filter(owner=username).order_by('-time')
+        queryset = Posts.objects.filter(owner=profile).order_by('-time')
 
-        page = request.GET.get('page')
+        page = request.data.get('page')
         pages = utils.paginator(queryset, page=page)
         results = pages.get('result')
         count = pages.get('count')
