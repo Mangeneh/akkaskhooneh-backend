@@ -40,8 +40,8 @@ class GetCommentsApiView(views.APIView):
                 data={"details": "Post not found"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        profile_private = post.owner.is_private
-        post_owner = post.owner
+        profile_private = post_query_set.owner.is_private
+        post_owner = post_query_set.owner
         user_profile = request.user
         if post_owner != user_profile and profile_private:
             try:
