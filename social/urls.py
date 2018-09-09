@@ -20,8 +20,10 @@ urlpatterns = [
     path('search/user/', UserSearchApiView.as_view()),
     path('feed/', FeedAPI.as_view()),
     path('search/tags/', TagSearchApiView.as_view()),
-    path('search/followers/<str:username>/', FollowerSearchApiView().as_view()),
-    path('search/following/<str:username>/', FollowingSearchApiView().as_view()),
+    path('search/followers/<str:username>/',
+         FollowerSearchApiView().as_view()),
+    path('search/following/<str:username>/',
+         FollowingSearchApiView().as_view()),
     path('followers/<str:username>/', FollowerSearchApiView().as_view()),
     path('following/<str:username>/', FollowingSearchApiView().as_view()),
     path('tophashtag/', TopHashtagListApiView.as_view()),
@@ -31,4 +33,5 @@ urlpatterns = [
     path('followrequest/', GetFollowReqAPI.as_view()),
     path('like/', LikeAPI.as_view()),
     path('comment/', CommentAPIView.as_view()),
+    path('comment/<int:post_id>/', GetCommentsApiView.as_view())
 ]
