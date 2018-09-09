@@ -28,11 +28,14 @@ class GetPostsSerializer(serializers.ModelSerializer):
         page = self.context.get("page")
         url = self.context.get("url")
         all = self.context.get("posts")
+        user = self.context.get('user')
         p = paginator(all, page=page)
 
         result = p.get('result')
         result_list = []
         for post in result:
+            like_query = Like.objects.filter(post=post, user=user)
+            is_liked = True if len(like_query) > 0 else False
             item = {
                 'id': post.id,
                 'owner_username': post.owner.username,
@@ -42,6 +45,7 @@ class GetPostsSerializer(serializers.ModelSerializer):
                 'likes': Like.objects.filter(post=post).count(),
                 'comments': Comment.objects.filter(post=post).count(),
                 'time': post.time,
+                'is_liked': is_liked
             }
             result_list.append(item)
 
