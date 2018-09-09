@@ -16,9 +16,9 @@ class PostDetailApiView(APIView):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         profile_private = post.owner.is_private
-        if profile_private:
-            post_owner = post.owner
-            user_profile = request.user
+        post_owner = post.owner
+        user_profile = request.user
+        if post_owner != user_profile and profile_private:
             try:
                 follow_status = Followers.objects.get(
                     user=user_profile,
