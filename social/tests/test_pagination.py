@@ -56,9 +56,3 @@ class PaginationTest(TestCase):
         Followers.objects.create(user=self.user, following=user)
         response = self.client.get("/social/pictures/testt/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-
-
-
-
-
