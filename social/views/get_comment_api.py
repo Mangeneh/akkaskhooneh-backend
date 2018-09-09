@@ -57,7 +57,7 @@ class GetCommentsApiView(views.APIView):
 
         comment_query_set = Comment.objects.filter(
             post=post_query_set).order_by('-time')
-        page = request.data.get('page')
+        page = request.GET.get('page')
         pages = utils.paginator(comment_query_set, page=page)
         results = pages.get('result')
         count = pages.get('count')
