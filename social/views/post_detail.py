@@ -40,6 +40,7 @@ class PostDetailApiView(APIView):
             is_liked = False
 
         data = {
+            "id": post.id,
             "picture": url + str(post.picture),
             "caption": post.caption,
             "is_liked": is_liked,
