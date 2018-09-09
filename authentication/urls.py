@@ -17,4 +17,5 @@ urlpatterns = [
     path('forgotpassword/', views.ForgotPasswordApiView.as_view()),
     path('forgotpassword/verify/', views.ForgotPasswordVerfication.as_view()),
     path('forgotpassword/complete/', views.ForgotPasswordComplete.as_view()),
+    path('change/status/', views.ChangePrivateStatus.as_view()),
 ]
