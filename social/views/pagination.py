@@ -48,7 +48,7 @@ class PaginationApiView(views.APIView):
 
         queryset = Posts.objects.filter(owner=profile).order_by('-time')
 
-        page = request.data.get('page')
+        page = request.GET.get('page')
         pages = utils.paginator(queryset, page=page)
         results = pages.get('result')
         count = pages.get('count')
