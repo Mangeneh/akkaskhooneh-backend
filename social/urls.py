@@ -35,4 +35,5 @@ urlpatterns = [
     path('comment/', CommentAPIView.as_view()),
     path('comment/<int:post_id>/', GetCommentsApiView.as_view()),
     path('request/delete/', DeleteFollowRequest.as_view())
+    path('unfollow/', )
 ]
