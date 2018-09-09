@@ -3,9 +3,11 @@ from authentication.models import User
 from social.models import Followers
 from rest_framework import status
 
+
 class PaginationTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create(email='t@t.com', username='test', password='')
+        self.user = User.objects.create(
+            email='t@t.com', username='test', password='')
         password = 'sjkkensks'
         self.user.set_password(password)
         self.user.save()
@@ -23,7 +25,6 @@ class PaginationTest(TestCase):
         response = self.client.get("/social/pictures/testsksksnosnxsldln/")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-
     def test_get_my_private_posts(self):
         self.user.is_private = True
         self.user.save()
@@ -31,7 +32,8 @@ class PaginationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_other_public_posts(self):
-        user = User.objects.create(email='tt@tt.com', username='testt', password='')
+        user = User.objects.create(
+            email='tt@tt.com', username='testt', password='')
         password = 'sjkkensks'
         user.set_password(password)
         user.save()
@@ -39,16 +41,18 @@ class PaginationTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_get_other_private_posts(self):
-        user = User.objects.create(email='tt@tt.com', username='testt', password='')
+        user = User.objects.create(
+            email='tt@tt.com', username='testt', password='')
         password = 'sjkkensks'
         user.set_password(password)
         user.is_private = True
         user.save()
         response = self.client.get("/social/pictures/testt/")
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_other_private_following_posts(self):
-        user = User.objects.create(email='tt@tt.com', username='testt', password='')
+        user = User.objects.create(
+            email='tt@tt.com', username='testt', password='')
         password = 'sjkkensks'
         user.set_password(password)
         user.is_private = True
@@ -56,4 +60,3 @@ class PaginationTest(TestCase):
         Followers.objects.create(user=self.user, following=user)
         response = self.client.get("/social/pictures/testt/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-
