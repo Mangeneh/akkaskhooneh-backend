@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 import utils
 from social.models import Posts, Comment, Followers
-
+from message_queue.add_to_redis import comment_notification
 
 class CommentAPIView(APIView):
     @staticmethod
@@ -68,4 +68,5 @@ class CommentAPIView(APIView):
         except:
             return Response({"details": 'comment already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        print(comment_notification(request.user.id, post.owner.id, post.id, content))
         return Response({'details': 'created'}, status=status.HTTP_201_CREATED)

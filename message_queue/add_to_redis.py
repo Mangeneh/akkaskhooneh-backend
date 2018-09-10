@@ -12,9 +12,9 @@ def like_notification(subject_user, target_user, post_id):
     _target_user = User.objects.filter(id=target_user)
     _post_id = Posts.objects.filter(id=post_id)
 
-    if _subject_user is None \
-            or _target_user is None \
-            or _post_id is None:
+    if len(_subject_user) == 0 \
+            or len(_target_user) == 0 \
+            or len(_post_id) == 0:
         return False
 
     data = {
@@ -34,8 +34,8 @@ def follow_notification(subject_user, target_user):
     _subject_user = User.objects.filter(id=subject_user)
     _target_user = User.objects.filter(id=target_user)
 
-    if _subject_user is None \
-            or _target_user is None:
+    if len(_subject_user) == 0 \
+            or len(_target_user) == 0:
         return False
 
     data = {
@@ -53,8 +53,8 @@ def follow_request_notification(subject_user, target_user):
     _subject_user = User.objects.filter(id=subject_user)
     _target_user = User.objects.filter(id=target_user)
 
-    if _subject_user is None \
-            or _target_user is None:
+    if len(_subject_user) == 0 \
+            or len(_target_user) == 0:
         return False
 
     data = {
@@ -74,12 +74,12 @@ def comment_notification(subject_user, target_user, post_id,
     _target_user = User.objects.filter(id=target_user)
     _post_id = Posts.objects.filter(id=post_id)
 
-    if _subject_user is None \
-            or _target_user is None \
-            or _post_id is None \
+    if len(_subject_user) == 0 \
+            or len(_target_user) == 0 \
+            or len(_post_id) == 0 \
             or comment_content is None \
             or type(comment_content) != str \
-            or comment_content != "":
+            or comment_content == "":
         return False
 
     data = {

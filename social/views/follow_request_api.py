@@ -4,7 +4,7 @@ from authentication.models import User
 from social.models import Request, Followers
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-
+from message_queue.add_to_redis import follow_notification, follow_request_notification
 
 class FollowRequest(views.APIView):
 
@@ -43,6 +43,7 @@ class FollowRequest(views.APIView):
                     requestee=target_user_query_set
                 )
                 if create:
+                    follow_request_notification(request.user.id, target_user_query_set.id)
                     return Response(
                         data={"detail": "Follow request created."},
                         status=status.HTTP_201_CREATED
@@ -75,6 +76,7 @@ class FollowRequest(views.APIView):
                         data={"details": "This object already exist."},
                         status=status.HTTP_400_BAD_REQUEST
                     )
+                follow_notification(request.user.id, target_user_query_set.id)
                 return Response(
                     data={"details": "You are successfully follow this user."},
                     status=status.HTTP_201_CREATED

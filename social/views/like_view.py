@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 import utils
-from social.models import Posts, Like, Followers
-
+from social.models import Posts, Like, Followers, Notification
+from message_queue.add_to_redis import like_notification
 
 class LikeAPI(APIView):
     @staticmethod
@@ -59,5 +59,8 @@ class LikeAPI(APIView):
 
         if not created:
             like.delete()
+        else:
+            if request.user != post.owner:
+                like_notification(request.user.id, post.owner.id, post.id)
 
         return Response({'liked': created}, status=status.HTTP_200_OK)
