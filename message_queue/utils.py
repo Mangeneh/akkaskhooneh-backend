@@ -1,7 +1,11 @@
 from enum import Enum
+import os
+
+os.environ.setdefault('REDIS_ADDRESS', 'localhost')
+
 
 redis_config = {
-    'host': 'localhost',
+    'host': os.environ.get('REDIS_ADDRESSS'),
     'port': 6379
 }
 
