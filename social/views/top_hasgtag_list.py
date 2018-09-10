@@ -22,14 +22,18 @@ class TopHashtagListApiView(views.APIView):
             tag_query_set = Tags.objects.get(id=item['tag_id'])
             tag_id = tag_query_set.id
             tag_name = tag_query_set.name
-            picture = url + str(TagContains.objects.filter(
-                tag=tag_query_set).order_by('-id')[0].post.picture)
-            new_item = {
-                "tag_id": tag_id,
-                "tag_name": tag_name,
-                "picture": picture
-            }
-            results_list.append(new_item)
+
+            tag_contains = TagContains.objects.filter(
+                tag=tag_query_set, post__owner__is_private=False
+            ).order_by('-id').first()
+
+            if tag_contains:
+                new_item = {
+                    "tag_id": tag_id,
+                    "tag_name": tag_name,
+                    "picture": '%s%s' %(url, str(tag_contains.post.picture))
+                }
+                results_list.append(new_item)
         data = {
             "total_pages": total_page,
             "count": count,
