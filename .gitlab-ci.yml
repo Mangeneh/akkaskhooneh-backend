@@ -1,11 +1,6 @@
 image: python:latest
 
-services:
-  - mysql:5.7
-
 variables:
-  MYSQL_ROOT_PASSWORD: gkjfsda875afsd87
-  MYSQL_DATABASE: backend
   DJANGO_SETTINGS_MODULE: settings.development
 
 cache:
