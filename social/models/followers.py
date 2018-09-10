@@ -9,6 +9,7 @@ class Followers(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     following = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')
+    time = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         unique_together = ('user', 'following')

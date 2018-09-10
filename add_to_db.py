@@ -20,13 +20,11 @@ def run():
 
         subject_user = data.get('subject_user')
         target_user = data.get('target_user')
-        time = data.get('time')
         action_type = data.get('action_type')
         action_data = data.get('action_data')
 
         if subject_user is None \
                 or target_user is None \
-                or time is None \
                 or action_type is None:
             continue
 
@@ -38,7 +36,6 @@ def run():
 
         notif = Notification.objects.create(subject_user_id=subject_user,
                                             target_user_id=target_user,
-                                            time=time,
                                             action_type=action_type)
         if action_type == NotifType.LIKE.value:
             notif.action_data = action_data
@@ -46,7 +43,7 @@ def run():
 
         if action_type == NotifType.COMMENT.value:
             notif.action_data = action_data
-            notif()
+            notif.save()
 
 
 if __name__ == '__main__':

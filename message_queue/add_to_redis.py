@@ -1,6 +1,5 @@
-from .utils import NotifType
 import redis
-from .utils import redis_config,
+from .utils import redis_config, NotifType
 from authentication.models import User
 from social.models import Posts
 import json
