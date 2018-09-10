@@ -6,7 +6,7 @@ services:
 variables:
   MYSQL_ROOT_PASSWORD: gkjfsda875afsd87
   MYSQL_DATABASE: backend
-  DJANGO_SETTINGS_MODULE: settings.ci
+  DJANGO_SETTINGS_MODULE: settings.development
 
 cache:
   paths:
