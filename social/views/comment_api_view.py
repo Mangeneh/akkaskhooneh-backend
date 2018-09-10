@@ -68,5 +68,6 @@ class CommentAPIView(APIView):
         except:
             return Response({"details": 'comment already exists.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        print(comment_notification(request.user.id, post.owner.id, post.id, content))
+        if request.user != post.owner:
+            comment_notification(request.user.id, post.owner.id, post.id, content)
         return Response({'details': 'created'}, status=status.HTTP_201_CREATED)
