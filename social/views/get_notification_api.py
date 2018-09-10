@@ -21,7 +21,7 @@ class GetNotificationAPI(APIView):
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
 
-        notifs = Notification.objects.filter(target_user_id=user.id).order_by('time')
+        notifs = Notification.objects.filter(target_user_id=user.id).order_by('-time')
 
         serializer = GetNotifSerializer(user, context={'page': page, 'url': url, 'notifs': notifs})
 
