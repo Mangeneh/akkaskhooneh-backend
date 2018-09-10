@@ -38,11 +38,11 @@ def run():
                                             target_user_id=target_user,
                                             action_type=action_type)
         if action_type == NotifType.LIKE.value:
-            notif.action_data = action_data
+            notif.action_data = json.dumps(action_data)
             notif.save()
 
         if action_type == NotifType.COMMENT.value:
-            notif.action_data = action_data
+            notif.action_data = json.dumps(action_data)
             notif.save()
 
 
