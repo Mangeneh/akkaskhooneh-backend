@@ -42,7 +42,7 @@ def run():
             notif.save()
 
         if action_type == NotifType.COMMENT.value:
-            notif.action_data = action_data
+            notif.action_data = json.dumps(action_data)
             notif.save()
 
 
