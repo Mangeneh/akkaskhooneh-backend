@@ -1,0 +1,17 @@
+image: python:latest
+
+variables:
+  DJANGO_SETTINGS_MODULE: settings.development
+
+cache:
+  paths:
+  - ~/.cache/pip/
+
+before_script:
+  - python -V
+  - pip install -r requirements-production.txt
+  - python manage.py migrate
+
+test:
+  script:
+    - python manage.py test
