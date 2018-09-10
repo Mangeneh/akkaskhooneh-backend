@@ -27,3 +27,4 @@ from .comment_api_view import CommentAPIView
 from .get_comment_api import GetCommentsApiView
 from .delete_request_api import DeleteFollowRequest
 from .unfollow_api_view import UnfollowApiView
+from .get_notification_api import GetNotificationAPI

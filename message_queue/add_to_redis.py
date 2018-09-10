@@ -18,12 +18,12 @@ def like_notification(subject_user, target_user, post_id):
         return False
 
     data = {
-        'subject_user': subject_user,
-        'target_user': target_user,
-        'action_data': {
-            'post_id': post_id
+        "subject_user": subject_user,
+        "target_user": target_user,
+        "action_data": {
+            "post_id": post_id
         },
-        'action_type': NotifType.LIKE.value
+        "action_type": NotifType.LIKE.value
     }
     json_data = json.dumps(data)
     r.rpush('notification', json_data)
@@ -39,9 +39,9 @@ def follow_notification(subject_user, target_user):
         return False
 
     data = {
-        'subject_user': subject_user,
-        'target_user': target_user,
-        'action_type': NotifType.FOLLOW.value
+        "subject_user": subject_user,
+        "target_user": target_user,
+        "action_type": NotifType.FOLLOW.value
     }
     json_data = json.dumps(data)
     r.rpush('notification', json_data)
@@ -58,9 +58,9 @@ def follow_request_notification(subject_user, target_user):
         return False
 
     data = {
-        'subject_user': subject_user,
-        'target_user': target_user,
-        'action_type': NotifType.FOLLOW_REQUEST.value
+        "subject_user": subject_user,
+        "target_user": target_user,
+        "action_type": NotifType.FOLLOW_REQUEST.value
     }
     json_data = json.dumps(data)
     r.rpush('notification', json_data)
@@ -83,13 +83,13 @@ def comment_notification(subject_user, target_user, post_id,
         return False
 
     data = {
-        'subject_user': subject_user,
-        'target_user': target_user,
-        'action_data': {
-            'post_id': post_id,
-            'comment_content': comment_content
+        "subject_user": subject_user,
+        "target_user": target_user,
+        "action_data": {
+            "post_id": post_id,
+            "comment_content": comment_content
         },
-        'action_type': NotifType.LIKE.value
+        "action_type": NotifType.LIKE.value
     }
     json_data = json.dumps(data)
     r.rpush('notification', json_data)
