@@ -14,6 +14,7 @@ class DeleteFollowRequest(views.APIView):
 
     def post(self, request):
         target_user_name = request.data.get('username')
+        request_username = request.user.username
 
         ip = utils.get_client_ip(request)
 
@@ -55,8 +56,8 @@ class DeleteFollowRequest(views.APIView):
         request.delete()
         logger.info('DeleteFollowRequest: post '
                     '(Follow request deleted succesfully) username:{}, ip: {}'.format(
-                        request.user.username, ip))
+                        request_username, ip))
         return Response(
             data={'details': 'Follow request deleted succesfully'},
-            status=status.HTTP_200_O
+            status=status.HTTP_200_OK
         )

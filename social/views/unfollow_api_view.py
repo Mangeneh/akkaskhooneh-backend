@@ -32,7 +32,7 @@ class UnfollowApiView(views.APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        source_user = request.User
+        source_user = request.user
         try:
             target_user = User.objects.get(username=username)
         except ObjectDoesNotExist:
