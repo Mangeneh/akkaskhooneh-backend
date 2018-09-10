@@ -28,7 +28,8 @@ class ProfileViewSet(APIView):
 
         if username is None:
             user = request.user
-            serializer = ProfileSerializer(user)
+
+            serializer = ProfileSerializer(user, context={'request_user': request.user})
             data = serializer.data
 
             return self._response(data, request)
@@ -39,7 +40,7 @@ class ProfileViewSet(APIView):
                 response_content = {"detail": "User not Found"}
                 return Response(response_content, status.HTTP_404_NOT_FOUND)
 
-            serializer = ProfileSerializer(user)
+            serializer = ProfileSerializer(user, context={'request_user': request.user})
 
             data = serializer.data
             data.pop('email', None)
