@@ -4,10 +4,8 @@ services:
   - mysql:5.7
 
 variables:
-  MYSQL_ROOT_PASSWORD: akkaskhooneh
+  MYSQL_ROOT_PASSWORD: gkjfsda875afsd87
   MYSQL_DATABASE: backend
-  MYSQL_USER: akkaskhooneh
-  MYSQL_PASSWORD: akkaskhooneh
 
 cache:
   paths:
