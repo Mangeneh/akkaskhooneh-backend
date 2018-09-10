@@ -10,7 +10,7 @@ class TopHashtagListApiView(views.APIView):
 
     def get(self, request, format=None):
         Tags_query_set = TagContains.objects.values('tag_id').annotate(
-            count=Count('tag')).distinct().order_by('-count')
+            count=Count('tag')).order_by('-count', '-tag_id')[:1000]
         page_number = request.GET.get('page')
         pages = utils.paginator(Tags_query_set, page=page_number)
         results = pages.get('result')
