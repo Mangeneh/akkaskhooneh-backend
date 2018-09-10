@@ -11,7 +11,7 @@ class TopHashtagListApiView(views.APIView):
     def get(self, request, format=None):
         Tags_query_set = TagContains.objects.values('tag_id').annotate(
             count=Count('tag')).distinct().order_by('-count')
-        page_number = request.data.get('page')
+        page_number = request.GET.get('page')
         pages = utils.paginator(Tags_query_set, page=page_number)
         results = pages.get('result')
         count = pages.get('count')
@@ -28,7 +28,7 @@ class TopHashtagListApiView(views.APIView):
                 "tag_id": tag_id,
                 "tag_name": tag_name,
                 "picture": picture
-                }
+            }
             results_list.append(new_item)
         data = {
             "total_pages": total_page,
@@ -36,4 +36,4 @@ class TopHashtagListApiView(views.APIView):
             "results": results_list
         }
 
-        return Response(data=data , status=status.HTTP_200_OK)
+        return Response(data=data, status=status.HTTP_200_OK)
