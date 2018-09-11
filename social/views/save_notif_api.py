@@ -118,4 +118,4 @@ class SaveNotifAPIView(APIView):
                 notif.action_data = json.dumps(ok_data)
                 notif.save()
 
-        return Response()
+        return Response({}, status=status.HTTP_200_OK)
