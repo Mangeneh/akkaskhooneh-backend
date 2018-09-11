@@ -19,7 +19,7 @@ class SaveNotifAPIView(APIView):
         utils.start_method_log("SaveNotifAPIView: post", ip=ip)
 
         if ip != "127.0.0.1":
-            return Response(data={'detail':'you are not allowed to view this api.'}, status=status.HTTP_404_NOT_FOUND)
+            return Response(data={'detail':'you are not allowed to view this api.'}, status=status.HTTP_403_FORBIDDEN)
 
         data = request.POST.copy()
         subject_user = data.get('subject_user')
