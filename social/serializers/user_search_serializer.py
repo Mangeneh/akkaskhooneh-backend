@@ -34,7 +34,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
         for user in result:
 
-            follow_state = 'now followed'
+            follow_state = 'not followed'
             is_followed = Followers.objects.filter(user=requset_user, following=user)
 
             if len(is_followed):
