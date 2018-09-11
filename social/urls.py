@@ -37,4 +37,5 @@ urlpatterns = [
     path('request/delete/', DeleteFollowRequest.as_view()),
     path('unfollow/', UnfollowApiView.as_view()),
     path('notification/', GetNotificationAPI.as_view()),
+    path('save/notif/', SaveNotifAPIView.as_view()),
 ]

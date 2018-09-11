@@ -15,3 +15,6 @@ class NotifType(Enum):
     FOLLOW = 2
     FOLLOW_REQUEST = 3
     COMMENT = 4
+    UNLIKE = 5
+    UNFOLLOW = 6
+    UNREQUEST = 7
