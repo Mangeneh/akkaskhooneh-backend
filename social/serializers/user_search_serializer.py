@@ -35,15 +35,15 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
         for user in result:
 
-            follow_state = 'not followed'
+            follow_state = 3
             is_followed = Followers.objects.filter(user=requset_user, following=user)
 
             if len(is_followed):
-                follow_state = 'followed'
+                follow_state = 1
 
             is_requested = Request.objects.filter(requester=requset_user, requestee=user)
             if len(is_requested):
-                follow_state = 'requested'
+                follow_state = 2
 
             item = {
                 'username': user.username,
