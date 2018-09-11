@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from social.models import Posts, Tags, TagContains, Request, Followers
 import utils
 import logging
+from message_queue.add_to_redis import follow_notification
 
 logger = logging.getLogger('social')
 
@@ -44,4 +45,5 @@ class AcceptFollowRequestAPIView(APIView):
 
         request_data[0].delete()
 
+        follow_notification(requester.id, request.user.id)
         return Response({'succes': True}, status=status.HTTP_201_CREATED)
