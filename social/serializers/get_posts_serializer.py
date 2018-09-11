@@ -42,8 +42,8 @@ class GetPostsSerializer(serializers.ModelSerializer):
                 'profile_picture': url + str(post.owner.profile_picture),
                 'post_picture': url + str(post.picture),
                 'caption': post.caption if post.caption is not None else "",
-                'likes': Like.objects.filter(post=post).count(),
-                'comments': Comment.objects.filter(post=post).count(),
+                'likes_count': Like.objects.filter(post=post).count(),
+                'comments_count': Comment.objects.filter(post=post).count(),
                 'time': post.time,
                 'is_liked': is_liked
             }

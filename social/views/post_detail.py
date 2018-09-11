@@ -41,14 +41,14 @@ class PostDetailApiView(APIView):
 
         data = {
             "id": post.id,
-            "picture": url + str(post.picture),
+            "post_picture": url + str(post.picture),
             "caption": post.caption,
             "is_liked": is_liked,
             "likes_count": likes_count,
             "comments_count": comments_count,
             "tags_list": tags_list,
             "profile_picture": url + str(post.owner.profile_picture),
-            "username": post.owner.username,
+            "owner_username": post.owner.username,
             "time": post.time
         }
 

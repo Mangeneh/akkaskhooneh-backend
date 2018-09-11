@@ -57,7 +57,7 @@ class PaginationApiView(views.APIView):
         for post in results:
             item = {
                 "id": post.id,
-                "picture": str(request.scheme) + "://" + request.get_host() +
+                "post_picture": str(request.scheme) + "://" + request.get_host() +
                 MEDIA_URL + str(post.picture)
             }
             results_list.append(item)
