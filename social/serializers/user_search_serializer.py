@@ -3,6 +3,7 @@ from authentication.models import User
 from social.models import Followers, Request
 from utils import paginator
 
+
 class UserSearchSerializer(serializers.ModelSerializer):
     count = serializers.SerializerMethodField()
     results = serializers.SerializerMethodField()
@@ -18,7 +19,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
 
     def get_total_pages(self, obj):
         all = self.context.get("data")
-        p = paginator(all)
+        p = paginator(all, limit=15)
         return p.get('total_page')
 
     def get_results(self, obj):
@@ -27,7 +28,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
         url = self.context.get("url")
         all = self.context.get("data")
         requset_user = self.context.get('request_user')
-        p = paginator(all, page=page)
+        p = paginator(all, page=page, limit=15)
 
         result = p.get('result')
         result_list = []
@@ -44,7 +45,6 @@ class UserSearchSerializer(serializers.ModelSerializer):
             if len(is_requested):
                 follow_state = 'requested'
 
-
             item = {
                 'username': user.username,
                 'is_private': user.is_private,
@@ -55,6 +55,3 @@ class UserSearchSerializer(serializers.ModelSerializer):
             result_list.append(item)
 
         return result_list
-
-
-

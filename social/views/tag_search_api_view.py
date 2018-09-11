@@ -15,7 +15,6 @@ from settings.base import MEDIA_URL
 class TagSearchApiView(APIView):
 
     def get(self, request, format=None):
-
         ip = utils.get_client_ip(request)
 
         utils.start_method_log('TagSearchApiView: get',
@@ -29,8 +28,9 @@ class TagSearchApiView(APIView):
 
         search_array = search_value.split(' ')
 
-        data = Tags.objects.filter(reduce(or_, [Q(name__icontains=q) for q in search_array])).order_by('-id')
+        data = Tags.objects.filter(reduce(or_, [Q(name__istartswith=q) for q in search_array])).order_by('-id')
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        serializer = TagSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,'request_user': self.request.user})
+        serializer = TagSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,
+                                                                     'request_user': self.request.user})
         return Response(serializer.data)

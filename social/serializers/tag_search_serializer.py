@@ -18,7 +18,7 @@ class TagSearchSerializer(serializers.ModelSerializer):
 
     def get_total_pages(self, obj):
         all = self.context.get("data")
-        p = paginator(all)
+        p = paginator(all, limit=15)
         return p.get('total_page')
 
     def get_results(self, obj):
@@ -27,7 +27,7 @@ class TagSearchSerializer(serializers.ModelSerializer):
         url = self.context.get("url")
         all = self.context.get("data")
         requset_user = self.context.get('request_user')
-        p = paginator(all, page=page)
+        p = paginator(all, page=page, limit=15)
 
         result = p.get('result')
         result_list = []
