@@ -20,7 +20,7 @@ class GetPostOfTagAPI(APIView):
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
         posts_following = Posts.objects.filter(tagcontains__tag_id=tag_id, owner__following__user=user)
-        posts_public = Posts.objects.filer(tagcontains__tag_id=tag_id, owner__is_private=False)
+        posts_public = Posts.objects.filter(tagcontains__tag_id=tag_id, owner__is_private=False)
         posts = (posts_following | posts_public).distinct().order_by('-time')
         serializer = GetPostsSerializer(user, context={'page': page, 'url': url, 'posts': posts})
 
