@@ -5,6 +5,7 @@ from authentication.models import User
 from social.models import Posts, Followers, Request, Comment
 from rest_framework import status
 
+
 class FollowRequestTest(TestCase):
     def create(self, email, username, password):
         user = User.objects.create(email=email, username=username, password='')
@@ -28,62 +29,78 @@ class FollowRequestTest(TestCase):
 
     def test_public_comment_post(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(1, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(1, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_public_already_commented_post(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_public_comment_my_post_post(self):
         post = self.create_post(self.user1)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_private_comment_my_post_post(self):
         post = self.create_post(self.user1)
         self.to_private(self.user1)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_private_comment_post(self):
         post = self.create_post(self.user2)
         self.to_private(self.user2)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(0, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(0, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_private_following_comment_post(self):
         post = self.create_post(self.user2)
         self.to_private(self.user2)
         Followers.objects.create(user=self.user1, following=self.user2)
-        response = self.client.post("/social/comment/", {'post_id':post.id,'content':'sks'})
+        response = self.client.post(
+            "/social/comment/", {'post_id': post.id, 'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(1, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(1, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_no_post_id_comment(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'content':'sks'})
+        response = self.client.post("/social/comment/", {'content': 'sks'})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(0, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(0, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_no_content_comment(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'post_id':post.id})
+        response = self.client.post("/social/comment/", {'post_id': post.id})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(0, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(0, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_empty_content_comment(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'content':'', 'post_id':post.id})
+        response = self.client.post(
+            "/social/comment/", {'content': '', 'post_id': post.id})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(0, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(0, Comment.objects.filter(
+            user=self.user1, post=post).count())
 
     def test_big_content_comment(self):
         post = self.create_post(self.user2)
-        response = self.client.post("/social/comment/", {'content':''.join(choice(ascii_letters) for _ in range(1010)), 'post_id':post.id})
+        response = self.client.post("/social/comment/", {'content': ''.join(
+            choice(ascii_letters) for _ in range(1010)), 'post_id': post.id})
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(0, Comment.objects.filter(user=self.user1, post=post).count())
+        self.assertEqual(0, Comment.objects.filter(
+            user=self.user1, post=post).count())
