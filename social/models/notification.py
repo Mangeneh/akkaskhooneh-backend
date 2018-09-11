@@ -8,4 +8,5 @@ class Notification(models.Model):
     target_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='target_user')
     action_type = models.IntegerField()
     action_data = models.CharField(max_length=2048)
+    post = models.ForeignKey(Posts, on_delete=models.CASCADE, null=True)
     time = models.DateTimeField(auto_now_add=True)
