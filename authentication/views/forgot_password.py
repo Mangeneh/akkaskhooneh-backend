@@ -41,7 +41,7 @@ class ForgotPasswordApiView(views.APIView):
         )
         if email.status_code == 200:
             return Response(
-                data={"token": "ANANAS"},
+                data={},
                 status=status.HTTP_201_CREATED
             )
         else:
