@@ -2,6 +2,7 @@ image: python:latest
 
 variables:
   DJANGO_SETTINGS_MODULE: settings.development
+  REDIS_ADDRESS: localhost
 
 cache:
   paths:
@@ -9,9 +10,17 @@ cache:
 
 before_script:
   - python -V
+  - apt-get update && apt-get install -y redis-server
+  - redis-server --version
+  - service redis-server start
   - pip install -r requirements-production.txt
   - python manage.py migrate
 
 test:
+  variables:
+    REDIS_ADDRESS: localhost
+
   script:
+    - python add_to_db.py &
+    - sleep 2
     - python manage.py test
