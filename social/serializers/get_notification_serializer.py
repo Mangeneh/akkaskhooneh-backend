@@ -37,34 +37,9 @@ class GetNotifSerializer(serializers.ModelSerializer):
         result_list = []
         for notif in result:
             data = {}
-            if notif.action_type == NotifType.LIKE.value:
-                get_data = json.loads(str(notif.action_data))
-
-                data = get_data.copy()
-                if data.get('post_id') is None:
-                    continue
-
-                post_id = data.get('post_id')
-                try:
-                    post = Posts.objects.get(id=post_id)
-                except:
-                    continue
-
-                data['post_picture'] = url + str(post.picture)
-
-            if notif.action_type == NotifType.COMMENT.value:
-                get_data = json.loads(notif.action_data)
-                data = get_data.copy()
-                if data.get('post_id') is None:
-                    continue
-                post_id = data.get('post_id')
-
-                try:
-                    post = Posts.objects.get(id=post_id)
-                except:
-                    continue
-
-                data['post_picture'] = url + str(post.picture)
+            if notif.action_type == NotifType.LIKE.value or \
+                    notif.action_type == NotifType.COMMENT.value:
+                data['post_picture'] = url + str(notif.post.picture)
 
             item = {
                 'subject_user': notif.subject_user.username,
