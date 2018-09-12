@@ -70,7 +70,7 @@ class FollowRequestTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data.get('count'), 1)
 
-    def test_username_fullname_search6(self):
+    def test_username_fullname_search7(self):
         self.set_fullname(self.user1, 'esjs')
         response = self.client.get("/social/search/user/?search=dsf fe")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
