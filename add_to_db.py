@@ -12,7 +12,8 @@ def run():
         ok_data = json_data[1].decode('utf-8')
         data = json.loads(ok_data)
 
-        requests.post('http://localhost:8000/social/save/notif/', data=data)
+
+        req =requests.post('http://localhost:8000/social/save/notif/', json=data)
 
 if __name__ == '__main__':
     run()
