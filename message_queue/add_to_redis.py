@@ -89,7 +89,7 @@ def comment_notification(subject_user, target_user, post_id,
             "post_id": post_id,
             "comment_content": comment_content
         },
-        "action_type": NotifType.LIKE.value
+        "action_type": NotifType.COMMENT.value
     }
     json_data = json.dumps(data)
     r.rpush('notification', json_data)
