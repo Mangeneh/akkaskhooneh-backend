@@ -64,7 +64,7 @@ class BoardDetailsAPI(APIView):
         for post in results:
             item = {
                 "id": post.get('post_id'),
-                "picture": str(request.scheme) + "://" + request.get_host() +
+                "post_picture": str(request.scheme) + "://" + request.get_host() +
                            MEDIA_URL + str(post.get('post__picture'))
             }
             results_list.append(item)
