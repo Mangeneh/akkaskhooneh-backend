@@ -14,7 +14,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
         fields = ('count', 'total_pages', 'results')
 
     def get_count(self, obj):
-        count = self.context.get("data").count()
+        count = len(self.context.get("data"))
         return count
 
     def get_total_pages(self, obj):

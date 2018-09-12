@@ -10,12 +10,12 @@ import utils
 from authentication.models import User
 from social.serializers.user_search_serializer import UserSearchSerializer
 from settings.base import MEDIA_URL
+import difflib
 
 
 class UserSearchApiView(APIView):
 
     def get(self, request, format=None):
-
         ip = utils.get_client_ip(request)
 
         utils.start_method_log('UserSearchApiView: get',
@@ -29,7 +29,16 @@ class UserSearchApiView(APIView):
 
         search_array = search_value.split(' ')
 
-        data = User.objects.filter(Q(reduce(or_, [Q(username__icontains=q) for q in search_array])) | Q(reduce(or_, [Q(fullname__icontains=q) for q in search_array]))).order_by('-id')
+        data = User.objects.filter(Q(reduce(or_, [Q(username__icontains=q) for q in search_array])) | Q(
+            reduce(or_, [Q(fullname__icontains=q) for q in search_array]))).order_by('-id')
+
+        data = list(data).copy()
+        data.sort(key=lambda obj: sum([max(difflib.SequenceMatcher(None, obj.username, q).ratio(),
+                                           difflib.SequenceMatcher(None, obj.fullname,
+                                                                   q).ratio() if obj.fullname is not None else 0) for
+                                       q in search_array]), reverse=True)
+
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
-        serializer = UserSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,'request_user': self.request.user})
+        serializer = UserSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,
+                                                                      'request_user': self.request.user})
         return Response(serializer.data)
