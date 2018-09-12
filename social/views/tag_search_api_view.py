@@ -10,6 +10,7 @@ import utils
 from social.models import Tags
 from social.serializers.tag_search_serializer import TagSearchSerializer
 from settings.base import MEDIA_URL
+import difflib
 
 
 class TagSearchApiView(APIView):
@@ -28,7 +29,11 @@ class TagSearchApiView(APIView):
 
         search_array = search_value.split(' ')
 
-        data = Tags.objects.filter(reduce(or_, [Q(name__istartswith=q) for q in search_array])).order_by('-id')
+        data = Tags.objects.filter(reduce(or_, [Q(name__icontains=q) for q in search_array])).order_by('-id')
+
+        data = list(data).copy()
+        data.sort(key=lambda obj: sum([difflib.SequenceMatcher(None, obj.name, q).ratio()
+                                       for q in search_array]), reverse=True)
 
         url = str(request.scheme) + '://' + request.get_host() + MEDIA_URL
         serializer = TagSearchSerializer(self.request.user, context={'page': page, 'url': url, 'data': data,
