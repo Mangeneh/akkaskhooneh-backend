@@ -73,6 +73,7 @@ class SaveNotifAPIView(APIView):
                 notif.delete()
 
             if action_type == NotifType.UNREQUEST.value:
+                
                 try:
                     notif = Notification.objects.get(subject_user=subject_user,
                                                      target_user=target_user,
