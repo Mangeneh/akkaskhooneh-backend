@@ -11,9 +11,9 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.11.140']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'testproject',
-        'USER': 'root',
-        'PASSWORD': 'nX2G7yeRgUf2dcR',
+        'NAME': os.environ.get('DJANGO_DB_NAME'),
+        'USER': os.environ.get('DJANGO_DB_USER'),
+        'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD'),
         'HOST': '172.17.0.4',
         'PORT': '',
     }
