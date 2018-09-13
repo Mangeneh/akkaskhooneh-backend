@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 import utils
 from social.models import Posts, Like, Followers, Notification
-from message_queue.add_to_redis import like_notification
+from message_queue.add_to_redis import like_notification, unlike_notification
 
 class LikeAPI(APIView):
     @staticmethod
@@ -59,6 +59,8 @@ class LikeAPI(APIView):
 
         if not created:
             like.delete()
+            if request.user != post.owner:
+                unlike_notification(request.user.id, post.owner.id, post.id)
         else:
             if request.user != post.owner:
                 like_notification(request.user.id, post.owner.id, post.id)

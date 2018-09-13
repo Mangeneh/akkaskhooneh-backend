@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 import logging
 import utils
+from message_queue.add_to_redis import unfollow_request_notification
 
 logger = logging.getLogger('social')
 
@@ -15,6 +16,7 @@ class DeleteFollowRequest(views.APIView):
     def post(self, request):
         target_user_name = request.data.get('username')
         request_username = request.user.username
+        request_id = request.user.id
 
         ip = utils.get_client_ip(request)
 
@@ -57,6 +59,7 @@ class DeleteFollowRequest(views.APIView):
         logger.info('DeleteFollowRequest: post '
                     '(Follow request deleted succesfully) username:{}, ip: {}'.format(
                         request_username, ip))
+        unfollow_request_notification(request_id, target_user.id)
         return Response(
             data={'details': 'Follow request deleted succesfully'},
             status=status.HTTP_200_OK

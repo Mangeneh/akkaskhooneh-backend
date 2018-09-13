@@ -5,6 +5,7 @@ from social.models import Followers
 from authentication.models import User
 
 from django.core.exceptions import ObjectDoesNotExist
+from message_queue.add_to_redis import unfollow_notification
 
 import utils
 import logging
@@ -60,6 +61,7 @@ class UnfollowApiView(views.APIView):
         logger.info('UnfollowApiView: post '
                     '(You are successfully unfollow this user) username:{}, ip: {}'.format(
                         request.user.username, ip))
+        unfollow_notification(source_user.id, target_user.id)
         return Response(
             data={"detail": "You are successfully unfollow this user."},
             status=status.HTTP_200_OK
