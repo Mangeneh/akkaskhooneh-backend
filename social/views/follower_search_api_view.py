@@ -15,9 +15,12 @@ from settings.base import MEDIA_URL
 
 class FollowerSearchApiView(APIView):
 
-    def get(self, request, username, format=None):
+    def get(self, request, username=None, format=None):
 
         ip = utils.get_client_ip(request)
+
+        if username is None:
+            username = request.user.username
 
         utils.start_method_log('FollowerSearchApiView: get',
                                username=request.user.username, ip=ip)
