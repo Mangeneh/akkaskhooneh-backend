@@ -45,8 +45,21 @@ class ForgotPasswordApiView(views.APIView):
             )
         try:
             token = Token.objects.get(user=user_query_set)
-            token.delete()
-            token = Token.objects.create(user=user_query_set)
+
+            token_time = token.created_time
+            now_time = datetime.datetime.now(datetime.timezone.utc)
+            ok_time = now_time - token_time
+            if ok_time.seconds > 300:
+                token.delete()
+                token = Token.objects.create(user=user_query_set)
+            else:
+                logger.info(
+                    'ForgotPasswordApiView: '
+                    'post (Try again later for create token. ip: {})'.format(ip))
+                return Response(
+                    data={"details": "Please try again a few minutes later"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
         except ObjectDoesNotExist:
             token = Token.objects.create(user=user_query_set)
         email = utils.send_email(
