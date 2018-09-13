@@ -73,11 +73,11 @@ class SaveNotifAPIView(APIView):
                 notif.delete()
 
             if action_type == NotifType.UNREQUEST.value:
-
+                
                 try:
                     notif = Notification.objects.get(subject_user=subject_user,
                                                      target_user=target_user,
-                                                     action_type=NotifType.FOLLOW_REQUEST)
+                                                     action_type=NotifType.FOLLOW_REQUEST.value)
                 except:
                     return Response({'detail': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
