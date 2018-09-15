@@ -169,7 +169,29 @@ def other_follow_notification(subject_user, target_user, other_user):
     data = {
         "subject_user": subject_user,
         "target_user": target_user,
-        "action_type": NotifType.OTHERFOLLOW.value,
+        "action_type": NotifType.OTHER_FOLLOW.value,
+        "action_data": {
+            "other_user": other_user
+        },
+    }
+    json_data = json.dumps(data)
+    r.rpush('notification', json_data)
+
+    return True
+
+def unother_follow_notification(subject_user, target_user, other_user):
+    _subject_user = User.objects.filter(id=subject_user)
+    _target_user = User.objects.filter(id=target_user)
+    _other_user = User.objects.filter(id=other_user)
+    if len(_subject_user) == 0 \
+            or len(_target_user) == 0 \
+            or len(_other_user) == 0:
+        return False
+
+    data = {
+        "subject_user": subject_user,
+        "target_user": target_user,
+        "action_type": NotifType.UNOTHER_FOLLOW.value,
         "action_data": {
             "other_user": other_user
         },
