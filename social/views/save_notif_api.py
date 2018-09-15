@@ -43,7 +43,8 @@ class SaveNotifAPIView(APIView):
 
         if action_type == NotifType.UNLIKE.value \
                 or action_type == NotifType.UNFOLLOW.value \
-                or action_type == NotifType.UNREQUEST.value:
+                or action_type == NotifType.UNREQUEST.value \
+                or action_type == NotifType.UNOTHER_FOLLOW.value:
 
             if action_type == NotifType.UNLIKE.value:
                 post_id = action_data.get('post_id')
@@ -73,11 +74,23 @@ class SaveNotifAPIView(APIView):
                 notif.delete()
 
             if action_type == NotifType.UNREQUEST.value:
-                
+
                 try:
                     notif = Notification.objects.get(subject_user=subject_user,
                                                      target_user=target_user,
                                                      action_type=NotifType.FOLLOW_REQUEST.value)
+                except:
+                    return Response({'detail': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
+
+                notif.delete()
+
+            if action_type == NotifType.UNOTHER_FOLLOW.value:
+
+                try:
+                    notif = Notification.objects.get(subject_user=subject_user,
+                                                     target_user=target_user,
+                                                     action_type=NotifType.OTHER_FOLLOW.value,
+                                                     action_data=action_data)
                 except:
                     return Response({'detail': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 

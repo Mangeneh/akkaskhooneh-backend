@@ -22,7 +22,7 @@ class GetNotifSerializer(serializers.ModelSerializer):
 
     def get_total_pages(self, obj):
         all = self.context.get('notifs')
-        p = paginator(all)
+        p = paginator(all, limit=15)
 
         return p.get('total_page')
 
@@ -31,7 +31,7 @@ class GetNotifSerializer(serializers.ModelSerializer):
         url = self.context.get("url")
         all = self.context.get("notifs")
         user = self.context.get('user')
-        p = paginator(all, page=page)
+        p = paginator(all, page=page, limit=15)
 
         result = p.get('result')
         result_list = []

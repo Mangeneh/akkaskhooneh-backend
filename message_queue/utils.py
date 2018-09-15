@@ -18,6 +18,8 @@ class NotifType(Enum):
     UNLIKE = 5
     UNFOLLOW = 6
     UNREQUEST = 7
+    OTHER_FOLLOW = 8
+    UNOTHER_FOLLOW = 9
 
 
 _logger = logging.getLogger('root')
