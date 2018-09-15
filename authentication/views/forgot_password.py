@@ -182,7 +182,7 @@ class ForgotPasswordComplete(views.APIView):
                     data={"details": "Password is not valid."},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            user_query_set = User.objects.get(user=token_query_set.user)
+            user_query_set = User.objects.get(email=token_query_set.user.email)
             user_query_set.set_password(password)
             user_query_set.save()
             token_query_set.delete()
