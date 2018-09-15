@@ -1,7 +1,7 @@
 import redis
 from .utils import redis_config, NotifType
 from authentication.models import User
-from social.models import Posts
+from social.models import Posts, Followers
 import json
 
 r = redis.Redis(**redis_config)
@@ -37,6 +37,10 @@ def follow_notification(subject_user, target_user):
     if len(_subject_user) == 0 \
             or len(_target_user) == 0:
         return False
+
+    followers = Followers.objects.filter(following=subject_user)
+    for follower in followers:
+        other_follow_notification(subject_user, follower.user.id, target_user)
 
     data = {
         "subject_user": subject_user,
@@ -169,7 +173,7 @@ def other_follow_notification(subject_user, target_user, other_user):
     data = {
         "subject_user": subject_user,
         "target_user": target_user,
-        "action_type": NotifType.OTHERFOLLOW.value,
+        "action_type": NotifType.OTHER_FOLLOW.value,
         "action_data": {
             "other_user": other_user
         },
