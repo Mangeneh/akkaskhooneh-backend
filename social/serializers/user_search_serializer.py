@@ -36,12 +36,14 @@ class UserSearchSerializer(serializers.ModelSerializer):
         for user in result:
 
             follow_state = 3
-            is_followed = Followers.objects.filter(user=requset_user, following=user)
+            is_followed = Followers.objects.filter(
+                user=requset_user, following=user)
 
             if len(is_followed):
                 follow_state = 1
 
-            is_requested = Request.objects.filter(requester=requset_user, requestee=user)
+            is_requested = Request.objects.filter(
+                requester=requset_user, requestee=user)
             if len(is_requested):
                 follow_state = 2
 
@@ -50,7 +52,7 @@ class UserSearchSerializer(serializers.ModelSerializer):
                 'is_private': user.is_private,
                 'profile_picture': url + str(user.profile_picture),
                 'fullname': user.fullname if user.fullname is not None else "",
-                'follow_state': follow_state
+                'following_status': follow_state
             }
             result_list.append(item)
 
