@@ -39,7 +39,7 @@ class TagSearchSerializer(serializers.ModelSerializer):
             picture = url + str(all_pic[0].post.picture)
 
             item = {
-                'id': tag.id,
+                'tag_id': tag.id,
                 'tag_name': tag.name,
                 'picture': picture
             }
