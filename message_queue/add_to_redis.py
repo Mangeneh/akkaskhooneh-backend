@@ -131,6 +131,10 @@ def unfollow_notification(subject_user, target_user):
             or len(_target_user) == 0:
         return False
 
+    followers = Followers.objects.filter(following=subject_user)
+    for follower in followers:
+        unother_follow_notification(subject_user, follower.user.id, target_user)
+
     data = {
         "subject_user": subject_user,
         "target_user": target_user,
