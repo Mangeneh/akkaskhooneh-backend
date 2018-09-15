@@ -16,6 +16,7 @@ DATABASES = {
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD'),
         'HOST': '172.17.0.4',
         'PORT': '',
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
