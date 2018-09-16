@@ -90,7 +90,7 @@ class SaveNotifAPIView(APIView):
                     notif = Notification.objects.get(subject_user=subject_user,
                                                      target_user=target_user,
                                                      action_type=NotifType.OTHER_FOLLOW.value,
-                                                     action_data=action_data)
+                                                     action_data=json.dumps(action_data))
                 except:
                     return Response({'detail': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
