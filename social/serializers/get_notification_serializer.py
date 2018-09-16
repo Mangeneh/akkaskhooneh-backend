@@ -43,6 +43,12 @@ class GetNotifSerializer(serializers.ModelSerializer):
                 data['post_picture'] = url + str(notif.post.picture)
                 data['post_id'] = notif.post.id
 
+            if notif.action_type == NotifType.OTHER_FOLLOW.value:
+                action_data = json.loads(notif.action_data)
+                id = action_data['other_user']
+                username = User.objects.get(id=id).username
+                data['username'] = username
+
             item = {
                 'subject_user': notif.subject_user.username,
                 'notif_type': notif.action_type,
