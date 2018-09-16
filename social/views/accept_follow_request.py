@@ -20,10 +20,10 @@ class AcceptFollowRequestAPIView(APIView):
 
         data = request.data.copy()
 
-        if data.get('request_id') == None or data.get('accept') == None:
+        if data.get('username') == None or data.get('accept') == None:
             return Response({'details': 'bad request!'}, status=status.HTTP_400_BAD_REQUEST)
 
-        request_data = Request.objects.filter(id=data['request_id'])
+        request_data = Request.objects.filter(requester__username=data.get('username'), requestee=request.user)
 
         if len(request_data) == 0:
             return Response({'details': 'cant find this request'}, status=status.HTTP_400_BAD_REQUEST)
