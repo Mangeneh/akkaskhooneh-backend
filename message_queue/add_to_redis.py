@@ -166,6 +166,8 @@ def unfollow_request_notification(subject_user, target_user):
 
 
 def other_follow_notification(subject_user, target_user, other_user):
+    if other_user == target_user:
+        return False
     _subject_user = User.objects.filter(id=subject_user)
     _target_user = User.objects.filter(id=target_user)
     _other_user = User.objects.filter(id=other_user)
@@ -187,7 +189,11 @@ def other_follow_notification(subject_user, target_user, other_user):
 
     return True
 
+
 def unother_follow_notification(subject_user, target_user, other_user):
+    if other_user == target_user:
+        return False
+
     _subject_user = User.objects.filter(id=subject_user)
     _target_user = User.objects.filter(id=target_user)
     _other_user = User.objects.filter(id=other_user)
