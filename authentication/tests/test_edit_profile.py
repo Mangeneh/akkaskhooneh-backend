@@ -39,6 +39,15 @@ class EditProfileTestCase(TestCase):
         response = self.client.post("/auth/editprofile/", data=data)
         self.assertEqual(response.status_code, 200)
 
+    def test_blank_edit_name(self):
+        data = {
+            'fullname': 'ali',
+            'bio': ''
+        }
+        response = self.client.post("/auth/editprofile/", data=data)
+        self.assertEqual(response.status_code, 200)
+
+
     def test_edit_big_bio(self):
         data = {
             'bio': ''.join(choice(ascii_letters) for _ in range(301))

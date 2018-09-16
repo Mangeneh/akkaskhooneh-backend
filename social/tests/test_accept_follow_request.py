@@ -18,28 +18,28 @@ class AcceptRequestTest(TestCase):
 
     def test_true_accept(self):
         request = Request.objects.create(requester=self.user2, requestee=self.user1)
-        response = self.client.post("/social/request/accept/", data={'request_id': request.id, 'accept': True}, content_type='application/json')
+        response = self.client.post("/social/request/accept/", data={'username': 'test2', 'accept': True}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(0, Request.objects.filter(requester=self.user2, requestee=self.user1).count())
         self.assertEqual(1, Followers.objects.filter(user=self.user2, following=self.user1).count())
 
     def test_true_reject(self):
         request = Request.objects.create(requester=self.user2, requestee=self.user1)
-        response = self.client.post("/social/request/accept/", data={'request_id': request.id, 'accept': False}, content_type='application/json')
+        response = self.client.post("/social/request/accept/", data={'username': 'test2', 'accept': False}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(0, Request.objects.filter(requester=self.user2, requestee=self.user1).count())
         self.assertEqual(0, Followers.objects.filter(user=self.user2, following=self.user1).count())
 
     def test_other_person_accept(self):
         request = Request.objects.create(requester=self.user1, requestee=self.user2)
-        response = self.client.post("/social/request/accept/", data={'request_id': request.id, 'accept': True}, content_type='application/json')
+        response = self.client.post("/social/request/accept/", data={'username': 'test2', 'accept': True}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(0, Request.objects.filter(requester=self.user2, requestee=self.user1).count())
         self.assertEqual(0, Followers.objects.filter(user=self.user2, following=self.user1).count())
 
     def test_wrong_request_id_accept(self):
         request = Request.objects.create(requester=self.user2, requestee=self.user1)
-        response = self.client.post("/social/request/accept/", data={'request_id': 392891, 'accept': True}, content_type='application/json')
+        response = self.client.post("/social/request/accept/", data={'username': 'restss', 'accept': True}, content_type='application/json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(1, Request.objects.filter(requester=self.user2, requestee=self.user1).count())
         self.assertEqual(0, Followers.objects.filter(user=self.user2, following=self.user1).count())
