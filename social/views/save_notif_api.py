@@ -132,4 +132,8 @@ class SaveNotifAPIView(APIView):
                 notif.action_data = json.dumps(ok_data)
                 notif.save()
 
+            elif action_type == NotifType.OTHER_FOLLOW.value:
+                notif.action_data = json.dumps(action_data)
+                notif.save()
+
         return Response({}, status=status.HTTP_200_OK)
