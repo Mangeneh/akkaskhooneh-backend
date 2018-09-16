@@ -90,7 +90,7 @@ class SaveNotifAPIView(APIView):
                     notif = Notification.objects.get(subject_user=subject_user,
                                                      target_user=target_user,
                                                      action_type=NotifType.OTHER_FOLLOW.value,
-                                                     action_data=action_data)
+                                                     action_data=json.dumps(action_data))
                 except:
                     return Response({'detail': 'bad request'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -130,6 +130,10 @@ class SaveNotifAPIView(APIView):
                 ok_data.pop('post_id')
 
                 notif.action_data = json.dumps(ok_data)
+                notif.save()
+
+            elif action_type == NotifType.OTHER_FOLLOW.value:
+                notif.action_data = json.dumps(action_data)
                 notif.save()
 
         return Response({}, status=status.HTTP_200_OK)
