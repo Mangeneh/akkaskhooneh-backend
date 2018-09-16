@@ -6,6 +6,7 @@ from authentication.models import User
 from social.models import Request, Followers
 import utils
 import logging
+from message_queue.add_to_redis import unfollow_request_notification, follow_notification
 
 logger = logging.getLogger('authentication')
 
@@ -31,6 +32,8 @@ class ChangePrivateStatus(APIView):
                         user=req.requester, following=req.requestee)
                 except:
                     pass
+                unfollow_request_notification(req.requestee.id, req.requester.id)
+                follow_notification(req.requestee.id, req.requester.id)
                 req.delete()
             user.is_private = False
             user.save()
