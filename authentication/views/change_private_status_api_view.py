@@ -18,7 +18,8 @@ class ChangePrivateStatus(APIView):
 
         ip = utils.get_client_ip(request)
 
-        utils.start_method_log('ChangePrivateStatus: post', username=request.user.username, ip=ip)
+        utils.start_method_log('ChangePrivateStatus: post',
+                               username=request.user.username, ip=ip)
 
         user = self.request.user
 
@@ -26,15 +27,19 @@ class ChangePrivateStatus(APIView):
             requests = Request.objects.filter(requestee=user)
             for req in requests:
                 try:
-                    Followers.objects.create(user=req.requester, following=req.requestee)
+                    Followers.objects.create(
+                        user=req.requester, following=req.requestee)
                 except:
                     pass
                 req.delete()
             user.is_private = False
             user.save()
-            return Response(data={'detail':'user is public now'}, status=status.HTTP_200_OK)
+            logger.info('ChangePrivateStatus: post '
+                        '(Change to public! username: {}, ip: {})'.format(request.user.username, ip))
+            return Response(data={'detail': 'user is public now'}, status=status.HTTP_200_OK)
         else:
             user.is_private = True
             user.save()
-            return Response(data={'detail':'user is private now'}, status=status.HTTP_200_OK)
-
+            logger.info('ChangePrivateStatus: post '
+                        '(Change to private! username: {}, ip: {})'.format(request.user.username, ip))
+            return Response(data={'detail': 'user is private now'}, status=status.HTTP_200_OK)
