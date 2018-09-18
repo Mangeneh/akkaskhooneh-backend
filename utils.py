@@ -71,15 +71,4 @@ def paginator(queryset, limit=10, page=1):
 
 def send_email(to, subject, body):
 
-    url = "http://192.168.10.66:80/api/send/mail"
-    data = {
-        "to": to,
-        "body": body,
-        "subject": subject
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "agent-key": "BD3OBY9w5H"
-    }
-
-    return requests.post(url, data=json.dumps(data), headers=headers)
+    pass
