@@ -20,5 +20,5 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = '/mnt/shared-volume/media'
-STATIC_ROOT = '/mnt/shared-volume/static'
+MEDIA_ROOT = '/mnt/media'
+STATIC_ROOT = '/mnt/static'
