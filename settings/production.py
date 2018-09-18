@@ -20,5 +20,5 @@ DATABASES = {
     }
 }
 
-MEDIA_ROOT = '/mnt/media'
-STATIC_ROOT = '/mnt/static'
+MEDIA_ROOT = '/mnt/akkaskhooneh/media'
+STATIC_ROOT = '/mnt/akkaskhooneh/static'
