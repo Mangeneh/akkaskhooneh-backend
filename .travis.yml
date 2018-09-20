@@ -6,6 +6,10 @@ python:
 services:
   - redis-server
 
+before_install:
+  - python --version
+  - pip install --upgrade pip
+
 install:
   - pip install --user -r requirements.txt
   - python manage.py migrate
