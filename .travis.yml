@@ -8,10 +8,10 @@ services:
 
 before_install:
   - python --version
-  - pip install --upgrade pip
+  - service redis-server status
 
 install:
-  - pip install --user -r requirements.txt
+  - pip install -r requirements.txt
   - python manage.py migrate
 
 script:
