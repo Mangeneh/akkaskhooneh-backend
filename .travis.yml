@@ -1,6 +1,6 @@
 lang: python
 
-rvm:
+python:
   - "3.6"
 
 services:
