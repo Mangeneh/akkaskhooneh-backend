@@ -6,13 +6,12 @@ python:
 services:
   - redis-server
 
-before_install:
-  - python --version
-  - sudo service redis-server status
-
 install:
   - pip install -r requirements.txt
-  - python manage.py migrate
+  - pip install coveralls
 
 script:
-  - python manage.py test
+  - coverage run --source=social,authentication manage.py test
+
+after_success:
+  - coveralls
