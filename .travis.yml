@@ -1,17 +1,17 @@
 lang: python
 
 python:
-  - "3.7"
+  - "3.6"
 
 services:
   - redis-server
 
 before_install:
-  - python --version
-  - pip install --upgrade pip
+  - python3 --version
+  - pip3 install --upgrade pip
 
 install:
-  - pip install --user -r requirements.txt
+  - pip3 install --user -r requirements.txt
   - python manage.py migrate
 
 script:
