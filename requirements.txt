@@ -8,7 +8,7 @@ chardet==3.0.4
 decorator==4.3.0
 Django==2.1.15
 django-filter==2.0.0
-djangorestframework==3.9.1
+djangorestframework==3.11.2
 djangorestframework-simplejwt==3.2.3
 entrypoints==0.2.3
 gunicorn==19.9.0
